@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>ActiveRecord::Session::Store</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Ruby Development">
+  <link rel="canonical" href="http://hi5dev.com/2013/01/01/active-record-session-store/">
+
+  <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
+  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+
+  <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
+  <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
+  <script src="/assets/yui-2a7298413fd4caa5503ee14e976bd046.js"></script>
+  <script src="/assets/pure-43ceac8f144ed47caf070f881a91b7ee.js"></script>
+  <script src="/assets/ga-0c1af228bf83b8a72685b6ac2e572780.js"></script>
+  <script src="/assets/search_results-7cf799b68d32b821f9db0c499eaf4028.js"></script>
+
+  
+  <script id="search-results-template" type="text/mustache">
+    {{#entries}}
+      <tr>
+        <td class="date">
+          <time datetime="{{ pubdate }}" pubdate>
+            {{ displaydate }}
+          </time>
+        </td>
+        <td>
+          <a href="{{ url }}">
+            {{ title }}
+          </a>
+        </td>
+      </tr>
+    {{/entries}}
+  </script>
+
+
+</head>
+
+  <body>
+    <div id="layout" class="pure-g-r">
+      <div class="sidebar pure-u-1-4">
+  <div class="header">
+    <hgroup>
+      <h1 class="brand-title">
+        <a href="/">Hi5Dev</a>
+      </h1>
+      <h2 class="brand-tagline">
+        Ruby Programming
+      </h2>
+    </hgroup>
+    <div class="nav">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/feed.xml " class="pure-button">RSS</a>
+        </li>
+        <li class="nav-item">
+          <a href="/contact " class="pure-button">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+      <div class="content pure-u-3-4">
+        <div class="main">
+          <div id="search">
+  <form action="/search" method="get" class="pure-form">
+    <input type="text"
+           id="search-query"
+           name="q"
+           placeholder="Search"
+           autocomplete="off"
+           class="pure-input-3-4"
+    >
+  </form>
+</div>
+
+
+          <section id="search-results" style="display: none;">
+            <table class="entries">
+            </table>
+          </section>
+
+          <hr/>
+
+          <section class="post" itemscope itemtype="http://schema.org/Article">
+  <header class="post-header">
+    <h2 class="post-title">
+      <a href="/2013/01/01/active-record-session-store/" itemprop="url">
+        <span itemprop="name">
+          ActiveRecord::Session::Store
+        </span>
+      </a>
+    </h2>
+    <p class="post-meta">
+      <span itemprop="datePublished">
+        Jan 1, 2013
+      </span>
+
+      
+
+      
+    </p>
+  </header>
+  <div class="post-description" itemprop="articleBody">
+    <p>Recently I ran into a cookie overflow issue when using the
+<a href="https://github.com/mperham/sidekiq">Sidekiq</a> gem for background processing. To
+solve the issue, I had to abandon using cookies for session storage, and instead
+use the database for sessions. It’s very easy to set up, and the instructions
+can be found in any Rails app in the <code>config/initializers/session_store.rb</code>
+file.</p>
+
+<p>Something that isn’t outlined in the initializer, however, is that if you also
+create a Session model, but instead of descending from <code>ActiveRecord::Base</code>,
+descend from <code>ActiveRecord::Session::Store</code>, you can access your app’s sessions
+from anywhere in your application:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: app/models/session.rb</span>
+<span class="lineno">2</span> <span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Store</span><span class="p">;</span> <span class="k">end</span></code></pre></div>
+
+<p>The <code>Session</code> object will behave like any other <code>ActiveRecord</code> model, with the
+exception of the <code>#data</code> method, which will return a <code>Hash</code> object.</p>
+
+<p>Here’s an example of how you could use this to broadcast a message to all your
+site’s current visitors:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="no">Session</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">session</span><span class="o">|</span>
+<span class="lineno">2</span>   <span class="n">session</span><span class="o">.</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Flash</span><span class="o">::</span><span class="no">FlashHash</span><span class="o">.</span><span class="n">new</span>
+<span class="lineno">3</span>   <span class="n">session</span><span class="o">.</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="ss">:alert</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;Server going down in 10 minutes for scheduled maintenance.&#39;</span>
+<span class="lineno">4</span>   <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
+<span class="lineno">5</span> <span class="k">end</span></code></pre></div>
+
+<p>You could even use it to display random site promotions. For example, using the
+<a href="https://github.com/adamwiggins/clockwork">clockwork</a> gem, you could do this:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno"> 1</span> <span class="c1"># File: lib/promotions.rb</span>
+<span class="lineno"> 2</span> <span class="nb">require</span> <span class="s1">&#39;clockwork&#39;</span>
+<span class="lineno"> 3</span> <span class="nb">require</span> <span class="s1">&#39;config/boot&#39;</span>
+<span class="lineno"> 4</span> <span class="nb">require</span> <span class="s1">&#39;config/environment&#39;</span>
+<span class="lineno"> 5</span> 
+<span class="lineno"> 6</span> <span class="n">every</span><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="s1">&#39;random.promos&#39;</span><span class="p">)</span> <span class="k">do</span>
+<span class="lineno"> 7</span>   <span class="no">Session</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">session</span><span class="o">|</span>
+<span class="lineno"> 8</span>     <span class="n">promo</span> <span class="o">=</span> <span class="no">Promo</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sample</span>
+<span class="lineno"> 9</span> 
+<span class="lineno">10</span>     <span class="n">session</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Flash</span><span class="o">::</span><span class="no">FlashHash</span><span class="o">.</span><span class="n">new</span>
+<span class="lineno">11</span>     <span class="n">session</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="ss">:promo</span><span class="o">]</span> <span class="o">=</span> <span class="n">promo</span><span class="o">.</span><span class="n">call_to_action</span>
+<span class="lineno">12</span>     <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
+<span class="lineno">13</span>   <span class="k">end</span>
+<span class="lineno">14</span> <span class="k">end</span></code></pre></div>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: app/views/application.html.erb</span>
+<span class="lineno">2</span> <span class="o">&lt;</span><span class="sx">% if </span><span class="n">flash</span><span class="o">[</span><span class="ss">:promo</span><span class="o">].</span><span class="n">present?</span> <span class="sx">%&gt;</span>
+<span class="lineno">3</span> <span class="sx">  &lt;div id=&quot;promo&quot;&gt;</span><span class="o">&lt;%=</span> <span class="n">raw</span> <span class="n">flash</span><span class="o">[</span><span class="ss">:promo</span><span class="o">]</span> <span class="sx">%&gt;&lt;/div&gt;</span>
+<span class="lineno">4</span> <span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span></code></pre></div>
+
+<p>Now the next time your site’s current visitors visit a new page they’ll be
+presented with the promotion, while any new visitors won’t see any promos until
+they’ve been browsing your site for at least 1 minute.</p>
+
+  </div>
+</section>
+
+
+          
+            <div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var url = document.location.protocol + "//" +
+            document.location.host +
+            document.location.pathname
+
+    , disqus_shortname = 'hi5dev'
+    , disqus_identifier = url
+    , disqus_url = url;
+
+  (function() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+<noscript>
+  Please enable JavaScript to view the
+  <a href="http://disqus.com/?ref_noscript">
+    comments powered by Disqus.
+  </a>
+</noscript>
+
+<a href="http://disqus.com" class="dsq-brlink">
+  comments powered by
+  <span class="logo-disqus">Disqus</span>
+</a>
+
+          
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

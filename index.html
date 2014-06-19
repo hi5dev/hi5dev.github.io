@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Hi5 Development</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Ruby Development">
+  <link rel="canonical" href="http://hi5dev.com/">
+
+  <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
+  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+
+  <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
+  <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
+  <script src="/assets/yui-2a7298413fd4caa5503ee14e976bd046.js"></script>
+  <script src="/assets/pure-43ceac8f144ed47caf070f881a91b7ee.js"></script>
+  <script src="/assets/ga-0c1af228bf83b8a72685b6ac2e572780.js"></script>
+  <script src="/assets/search_results-7cf799b68d32b821f9db0c499eaf4028.js"></script>
+
+  
+  <script id="search-results-template" type="text/mustache">
+    {{#entries}}
+      <tr>
+        <td class="date">
+          <time datetime="{{ pubdate }}" pubdate>
+            {{ displaydate }}
+          </time>
+        </td>
+        <td>
+          <a href="{{ url }}">
+            {{ title }}
+          </a>
+        </td>
+      </tr>
+    {{/entries}}
+  </script>
+
+
+</head>
+
+  <body>
+    <div id="layout" class="pure-g-r">
+      <div class="sidebar pure-u-1-4">
+  <div class="header">
+    <hgroup>
+      <h1 class="brand-title">
+        <a href="/">Hi5Dev</a>
+      </h1>
+      <h2 class="brand-tagline">
+        Ruby Programming
+      </h2>
+    </hgroup>
+    <div class="nav">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/feed.xml " class="pure-button">RSS</a>
+        </li>
+        <li class="nav-item">
+          <a href="/contact " class="pure-button">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+      <div class="content pure-u-3-4">
+        <div class="main">
+          <div id="search">
+  <form action="/search" method="get" class="pure-form">
+    <input type="text"
+           id="search-query"
+           name="q"
+           placeholder="Search"
+           autocomplete="off"
+           class="pure-input-3-4"
+    >
+  </form>
+</div>
+
+
+          <section id="search-results" style="display: none;">
+            <table class="entries">
+            </table>
+          </section>
+
+          <hr/>
+
+          
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/rails/2014/06/16/flash_marketing_with_rails/">
+          Flash Marketing with Rails
+        </a>
+      </h2>
+      <p class="post-meta">
+        Jun 16, 2014
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>In a <a href="http://www.hi5dev.com/2013/01/01/active-record-session-store/">previous article</a>,
+I talked about how you can use ActiveRecord session store to display promotions
+to your site’s visitors. Since that article was written, the ActiveRecord
+session store code has been refactored from Rails into its own gem, along with a
+few other changes that make the code incompatible with Rails 4 or higher.</p>
+
+<p>This is an update to that article, with a more complete tutorial. You can find
+the code for this article hosted on
+<a href="//github.com/hi5dev/flash_marketing_with_rails">Github here</a>.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<p>To demonstrate this concept, let’s start by creating a new Rails application:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>rails new flash_marketing
+<span class="nv">$ </span><span class="nb">cd </span>flash_marketing
+<span class="nv">$ </span>rake db:create</code></pre></div>
+
+<p>Next, install <code>activerecord-session_store</code>:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;gem &#39;activerecord-session_store&#39;&quot;</span> &gt;&gt; Gemfile
+<span class="nv">$ </span>bundle
+<span class="nv">$ </span>rails g active_record:session_migration
+<span class="nv">$ </span>rake db:migrate</code></pre></div>
+
+<p>Then edit <code>config/initializers/session_store.rb</code> and update it to the following:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">session_store</span> <span class="ss">:active_record_store</span></code></pre></div>
+
+<h2 id="custom-session-model">Custom Session Model</h2>
+
+<p>Now we can create a <code>Session</code> model that descends from
+<code>ActiveRecord::SessionStore::Session</code>. This will allow us to access every user’s
+session outside of the scope of the current user.</p>
+
+<p>Create <code>app/models/session.rb</code> and add the following content:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">SessionStore</span><span class="o">::</span><span class="no">Session</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Normally we can only access a single user’s session data in the views or
+controllers. Using this model we have access to every user’s session, not just
+the current user, and from anywhere in our application. This includes background
+processes, which is what we will be using later on in this tutorial.</p>
+
+<h2 id="flash-messages">Flash Messages</h2>
+
+<p>Next, we need to be able to communicate with our site’s users. For that we’ll be
+taking advantage of Rails’ built in <code>flash</code> notification system. Let’s begin by
+adding a <code>flash</code> method to our <code>Session</code> model:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">SessionStore</span><span class="o">::</span><span class="no">Session</span>
+  <span class="k">def</span> <span class="nf">flash</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+    <span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="p">{</span><span class="s1">&#39;flashes&#39;</span> <span class="o">=&gt;</span> <span class="p">{},</span> <span class="s1">&#39;discard&#39;</span> <span class="o">=&gt;</span> <span class="o">[]</span><span class="p">}</span>
+    <span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="s1">&#39;flashes&#39;</span><span class="o">][</span><span class="nb">id</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">=</span> <span class="n">msg</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Now we can display flash messages to any of our site’s visitors. Just keep in
+mind that we’re not actually using
+<a href="http://api.rubyonrails.org/classes/ActionDispatch/Flash.html">ActionDispatch::Flash</a>,
+which is what is used in the controllers.</p>
+
+<p>Next, let’s update the application’s layout to display flash messages. Add these
+lines to <code>app/views/application.html.erb</code> somewhere in the body:</p>
+
+<div class="highlight"><pre><code class="erb"><span class="cp">&lt;%</span> <span class="n">flash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">id</span><span class="p">,</span> <span class="n">msg</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">content_tag</span> <span class="ss">:div</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="ss">class</span><span class="p">:</span> <span class="s2">&quot;flash_</span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span></code></pre></div>
+
+<h2 id="see-it-in-action">See it in Action</h2>
+
+<p>So we can actually test this out, let’s remove the default Rails view by adding
+our own home page:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>rails g controller home show</code></pre></div>
+
+<p>And then add that as our root path in <code>config/routes.rb</code>:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+  <span class="n">root</span> <span class="ss">to</span><span class="p">:</span> <span class="s1">&#39;home#show&#39;</span>
+<span class="k">end</span></code></pre></div>
+
+<p>To see it action, open up the application in your browser. Doing so will
+automatically create a new session record. Next, open a Rails console so you can
+see what’s going on:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">session</span> <span class="o">=</span> <span class="no">Session</span><span class="o">.</span><span class="n">first</span>
+<span class="c1"># =&gt; #&lt;Session id: 1, session_id: &quot;f28ae9f7dd2066023be808c3b337e390&quot;, data: &quot;BAh7BkkiEF9jc3JmX3Rva2VuBjoGRUZJIjFZYnFUb25sSlFXVV...&quot;, created_at: &quot;2014-06-16 19:49:07&quot;, updated_at: &quot;2014-06-16 19:49:07&quot;&gt;</span></code></pre></div>
+
+<p>If you inspect <code>session.data</code>, you’ll notice that it returns a Hash:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">session</span><span class="o">.</span><span class="n">data</span>
+<span class="c1"># =&gt; {&quot;_csrf_token&quot;=&gt;&quot;YbqTonlJQWUQKTU/jLQFZVha7EiqN+uFlGO8g5nFgkg=&quot;}</span></code></pre></div>
+
+<p>This is because it’s automatically serialized for you on the fly. Basically
+<code>session.data</code> can be treated the same as the <code>session</code> variable in a controller
+or view, except that you’ll have to call <code>session.save</code> to persist the data. Go
+ahead and try it out now by calling our custom <code>flash</code> method:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">session</span><span class="o">.</span><span class="n">flash</span> <span class="ss">:notice</span><span class="p">,</span> <span class="s2">&quot;hello world&quot;</span>
+<span class="n">session</span><span class="o">.</span><span class="n">save</span></code></pre></div>
+
+<p>Now refresh your browser, and you’ll see the message appear. Refresh it again,
+and it won’t appear twice, just like any normal flash message.</p>
+
+<h2 id="promotions">Promotions</h2>
+
+<p>Let’s put this feature to use by creating a Promotion model that we can use to
+display promotions to our site’s visitors.</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>rails g model promotion name call_to_action:string active:boolean
+<span class="nv">$ </span>rake db:migrate</code></pre></div>
+
+<p>The <code>call_to_action</code> will be the message displayed to the user. Setting <code>active</code>
+to false will disable the promotion. You can, of course, customize it however
+you’d like. For example, you might want to have a start and end date, or some
+prerequisites for targeting specific visitors. For this example we’re keeping it
+purposefully simple.</p>
+
+<p>Let’s seed in a couple promotions. Add the following content to <code>db/seeds.rb</code>:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="no">Promotion</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span>
+  <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Clearance&quot;</span><span class="p">,</span>
+  <span class="ss">:call_to_action</span> <span class="o">=&gt;</span> <span class="s2">&quot;Save up to 90% on select items! Discount code: OVERSTOCK&quot;</span><span class="p">,</span>
+  <span class="ss">:active</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+<span class="p">)</span>
+
+<span class="no">Promotion</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span>
+  <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Upsale&quot;</span><span class="p">,</span>
+  <span class="ss">:call_to_action</span> <span class="o">=&gt;</span> <span class="s2">&quot;Add another widget to your cart now for a 25% discount&quot;</span><span class="p">,</span>
+  <span class="ss">:active</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+<span class="p">)</span></code></pre></div>
+
+<p>Make sure to run <code>rake db:seed</code> to load the promotions into your database.</p>
+
+<p>Now let’s edit our Session model and add a method we can use to display the
+promotions to our site’s visitors:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">SessionStore</span><span class="o">::</span><span class="no">Session</span>
+  <span class="k">def</span> <span class="nf">flash</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+    <span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="p">{</span><span class="s1">&#39;flashes&#39;</span> <span class="o">=&gt;</span> <span class="p">{},</span> <span class="s1">&#39;discard&#39;</span> <span class="o">=&gt;</span> <span class="o">[]</span><span class="p">}</span>
+    <span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="s1">&#39;flashes&#39;</span><span class="o">][</span><span class="nb">id</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">=</span> <span class="n">msg</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">display_promotion</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">track</span><span class="o">=</span><span class="kp">true</span><span class="p">)</span>
+    <span class="n">viewed_promotions</span> <span class="o">&lt;&lt;</span> <span class="nb">id</span> <span class="k">if</span> <span class="n">track</span>
+    <span class="n">promotion</span> <span class="o">=</span> <span class="no">Promotion</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">flash</span> <span class="ss">:promotion</span><span class="p">,</span> <span class="n">promotion</span><span class="o">.</span><span class="n">call_to_action</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">viewed_promotions</span>
+    <span class="n">data</span><span class="o">[</span><span class="s1">&#39;viewed_promotions&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="o">[]</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Go ahead and test that out now if you’d like. You should still have the Rails
+server and console running. Enter this into the console:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">reload!</span>
+<span class="n">promotion</span> <span class="o">=</span> <span class="no">Promotion</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sample</span>
+<span class="no">Session</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">tap</span> <span class="k">do</span> <span class="o">|</span><span class="n">session</span><span class="o">|</span>
+  <span class="n">session</span><span class="o">.</span><span class="n">display_promotion</span><span class="p">(</span><span class="n">promotion</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="kp">false</span><span class="p">)</span>
+  <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Now refresh your browser, and you should see the promotion appear. Refresh it
+again, and it goes away as expected.</p>
+
+<p>Notice I set track to false for this example. This is because we don’t really
+want to start keeping track of the promotions while testing it out in the
+console. Otherwise we’d have to clear our session if we want to test it out more
+than once.</p>
+
+<h2 id="running-the-promotions">Running the Promotions</h2>
+
+<p>To run the promotions we can use a background processor. For this example I’ll
+be using the <a href="https://github.com/tomykaira/clockwork">clockwork gem</a>.</p>
+
+<p>Start by installing the gem:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;gem &#39;clockwork&#39;&quot;</span> &gt;&gt; Gemfile
+<span class="nv">$ </span>bundle</code></pre></div>
+
+<p>Next, create a file called <code>lib/promotions.rb</code> and add the following content:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;clockwork&#39;</span>
+
+<span class="n">require_relative</span> <span class="s1">&#39;../config/boot&#39;</span>
+<span class="n">require_relative</span> <span class="s1">&#39;../config/environment&#39;</span>
+
+<span class="k">module</span> <span class="nn">Clockwork</span>
+  <span class="n">every</span><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="s1">&#39;random.promotions&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="no">Session</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">session</span><span class="o">|</span>
+      <span class="n">promotion</span> <span class="o">=</span> <span class="no">Promotion</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sample</span>
+      <span class="k">next</span> <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">viewed_promotions</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">promotion</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+      <span class="n">session</span><span class="o">.</span><span class="n">display_promotion</span><span class="p">(</span><span class="n">promotion</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+      <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="k">end</span></code></pre></div>
+
+<p>I won’t go over this file in depth. If you’d like to know exactly how it works
+you can read the clockwork documentation. Basically what it does is display a
+random promotion to every visitor on your site every 1 minute.</p>
+
+<p>Run this command to try it out:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>bundle <span class="nb">exec </span>clockwork lib/promotions.rb</code></pre></div>
+
+<p>Note that <code>bundle exec</code> is required in this case.</p>
+
+<p>The way clockwork functions, the promotion will be run immediately, and then
+every minute thereafter.</p>
+
+<h2 id="tracking-active-vistors">Tracking Active Vistors</h2>
+
+<p>By adding data to the sessions, we’re not actually targetting active visitors.
+The session could have been created days ago, and the visitor might not actually
+be on the site at the moment.</p>
+
+<p>So let’s fix that. Add the following code to
+<code>app/controllers/application_controller.rb</code>:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="n">before_action</span> <span class="p">{</span> <span class="n">session</span><span class="o">[</span><span class="ss">:last_seen_at</span><span class="o">]</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}</span></code></pre></div>
+
+<p>We can now keep track of when the last time a visitor actually used the
+application. Let’s add a scope for this to the Session model:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">SessionStore</span><span class="o">::</span><span class="no">Session</span>
+  <span class="n">scope</span> <span class="ss">:active</span><span class="p">,</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">all</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:active?</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="k">def</span> <span class="nf">active?</span>
+    <span class="n">data</span><span class="o">[</span><span class="s1">&#39;last_seen_at&#39;</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">data</span><span class="o">[</span><span class="s1">&#39;last_seen_at&#39;</span><span class="o">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="o">.</span><span class="n">minute</span><span class="o">.</span><span class="n">ago</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></div>
+
+<p>Now we can update our clockwork process to target only the active visitors:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;clockwork&#39;</span>
+
+<span class="n">require_relative</span> <span class="s1">&#39;../config/boot&#39;</span>
+<span class="n">require_relative</span> <span class="s1">&#39;../config/environment&#39;</span>
+
+<span class="k">module</span> <span class="nn">Clockwork</span>
+  <span class="n">every</span><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="s1">&#39;random.promotions&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="no">Session</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">session</span><span class="o">|</span>
+      <span class="n">promotion</span> <span class="o">=</span> <span class="no">Promotion</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sample</span>
+      <span class="k">next</span> <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">viewed_promotions</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">promotion</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+      <span class="n">session</span><span class="o">.</span><span class="n">display_promotion</span><span class="p">(</span><span class="n">promotion</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+      <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="k">end</span></code></pre></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This method allows you to push data to your users’ sessions. Alternatively, you
+could do the same exact thing by adding a few more columns to the <code>Promotion</code>
+model, and some code to the <code>ApplicationController</code>. It would be much simpler,
+as you wouldn’t need a background process, however, you’d be pulling the data
+instead of pushing it.</p>
+
+<h3 id="whats-the-difference-between-pushing-and-pulling-data">What’s the difference between pushing and pulling data?</h3>
+
+<p>The difference is that the server is directly communicating with your users when
+you push data. This opens up a lot of possibilities. For example, if you wanted
+to put your server into maintenance mode, you could have a process that you can
+run to let all of your site’s active visitors know that you’re about to shut
+them down.</p>
+
+<p>For example. Add a <code>bin/maintenance</code> file to the application with the following
+code:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="c1">#!/usr/bin/env ruby</span>
+<span class="no">APP_PATH</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="s1">&#39;../../config/application&#39;</span><span class="p">,</span>  <span class="bp">__FILE__</span><span class="p">)</span>
+<span class="n">require_relative</span> <span class="s1">&#39;../config/boot&#39;</span>
+<span class="n">require_relative</span> <span class="s1">&#39;../config/environment&#39;</span>
+
+<span class="n">ttl</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="k">until</span> <span class="n">ttl</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">do</span>
+  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">ttl</span><span class="si">}</span><span class="s2">&quot;</span>
+
+  <span class="no">Session</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">session</span><span class="o">|</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">flash</span> <span class="ss">:alert</span><span class="p">,</span> <span class="s2">&quot;Server shutting down in </span><span class="si">#{</span><span class="n">ttl</span><span class="si">}</span><span class="s2"> seconds.&quot;</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">save</span>
+  <span class="p">}</span>
+
+  <span class="nb">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+  <span class="n">ttl</span> <span class="o">-=</span> <span class="mi">1</span>
+<span class="k">end</span>
+
+<span class="no">Session</span><span class="o">.</span><span class="n">active</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">session</span><span class="o">|</span>
+  <span class="c1"># clear flash messages so visitors don&#39;t</span>
+  <span class="c1"># see the last one next time they sign on</span>
+  <span class="n">session</span><span class="o">.</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
+  <span class="n">session</span><span class="o">.</span><span class="n">save</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Then make it an executable:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>chmod +x bin/maintenance</code></pre></div>
+
+<p>Now your site’s active visitors will have a nice timed warning the next time you
+go to shut down the server. All you have to do is run <code>bin/maintenance</code> before
+you shut it down. To accomplish the same task via pulling data from the server
+would be considerably more complex, as you can imagine.</p>
+
+    </div>
+  </section>
+
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/jekyll/2014/06/13/using-foreman-with-jekyll/">
+          Using Foreman with Jekyll
+        </a>
+      </h2>
+      <p class="post-meta">
+        Jun 13, 2014
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>When building a website with Jekyll, you might want the site to automatically
+rebuild when you make a change. You can do that with the <code>jekyll build --watch</code>
+command. Then of course you’ll want to serve the website so you can preview it
+in the browser. For that there’s the <code>jekyll serve</code> command.</p>
+
+<p>Running both commands at the same time requires opening separate terminal tabs.
+This can be a little bit frustrating. Especially when you start adding more
+features to your site. For example, if you want to use compass to compile SASS,
+you’ll need to open a 3rd tab to run <code>compass watch</code>.</p>
+
+<p>Doing this over and over again every time you want to edit your site can become
+a little tedious. Each time you’ll have to open at least two tabs, and remember
+which commands to run to get things started. And, if you haven’t worked on the
+site for a while, you might not remember all the components you’re using.</p>
+
+<p>Fortunately there’s an awesome gem called
+<a href="//github.com/ddollar/foreman">Foreman</a> that can help you out with this. Here’s
+how to get it up and running with Jekyll.</p>
+
+<p>First, install the gem:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>gem install foreman</code></pre></div>
+
+<p>Then, create a new file called <code>Procfile</code> in the root of your Jekyll project
+folder, and add the tasks you want running in parallel. Using the three tasks
+mentioned above as an example, your <code>Procfile</code> might look something like this:</p>
+
+<div class="highlight"><pre><code class="yaml"><span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">jekyll build --watch</span>
+<span class="l-Scalar-Plain">server</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">jekyll serve</span>
+<span class="l-Scalar-Plain">compass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">compass watch</span></code></pre></div>
+
+<p>To start all the processes in parallel, just run:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>foreman start</code></pre></div>
+
+<p>Now you can manage and monitor all the processes in just one tab. Pressing
+CTRL+C will automatically send the KILL signal to every task for you.</p>
+
+    </div>
+  </section>
+
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/code/2013/12/05/free-private-gem-server-how-to/">
+          Get Your Own Free Private Gem Server
+        </a>
+      </h2>
+      <p class="post-meta">
+        Dec 5, 2013
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>Using Heroku you can privately host your gems in just a couple of minutes.
+Here’s how.</p>
+
+<p>Start by creating an empty project folder, and add a Gemfile with only the
+source and ruby version:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: Gemfile</span>
+<span class="lineno">2</span> <span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
+<span class="lineno">3</span> <span class="n">ruby</span> <span class="s1">&#39;2.0.0&#39;</span></code></pre></div>
+
+<p>Then run <code>bundle</code> to generate <code>Gemfile.lock</code>.</p>
+
+<p>Next, create a Procfile with the following content:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="c"># File: Procfile</span>
+<span class="lineno">2</span> web: gem server -p <span class="nv">$PORT</span></code></pre></div>
+
+<p>Then set up Git:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>git init .
+<span class="lineno">2</span> <span class="nv">$ </span>git add .
+<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Initial commit</code></pre></div>
+
+<p>Create a new Heroku app and push your application to Heroku:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku create
+<span class="lineno">2</span> <span class="nv">$ </span>git push heroku master</code></pre></div>
+
+<p>Then launch your new privately hosted gem server in the browser:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku open</code></pre></div>
+
+<p>And just like that you have your very own private gem server. Now let’s push a
+gem to the server.</p>
+
+<p>First you’ll want to create a .gitignore file and add .bundle to it so we don’t
+end up pushing our local Bundler settings to heroku:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;.bundle&quot;</span> &gt;&gt; .gitignore
+<span class="lineno">2</span> <span class="nv">$ </span>git add .gitignore
+<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Ignoring the .bundle path</code></pre></div>
+
+<p>Next you’ll need a <code>vendor/cache</code> folder. This is where you’ll place your
+private <code>.gem</code> files. So go ahead and create that folder now, and copy your
+gem file into it.</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>mkdir vendor
+<span class="lineno">2</span> <span class="nv">$ </span>mkdir vendor/cache
+<span class="lineno">3</span> <span class="nv">$ </span>cp my.gem vendor/cache <span class="c"># replace &#39;my.gem&#39; with your actual gem file</span></code></pre></div>
+
+<p>This is where things can get a little tricky. In order for us to push our gem
+to Heroku, we need to first run <code>bundle install</code>. However since our gem is
+going to be privately hosted, Bundler will try and fail to download it from
+rubygems.org. So we need to cache the gem first so it doesn’t try to download
+it. Ironically, the way we do that is by using the <code>--no-cache</code> flag. Then
+you’ll need to run <code>bundle package --all</code> to vendor your gem’s dependencies
+along with the gem:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>bundle install --no-cache
+<span class="lineno">2</span> <span class="nv">$ </span>bundle package --all</code></pre></div>
+
+<p>Using <code>bundle --no-cache</code> tells Bundler that the <code>.gem</code> files have already been
+copied into the <code>vendor/cache</code> folder, and it will install those instead of
+connecting to rubygems.org. <code>bundle package --all</code> downloads the missing
+dependencies and copies their <code>.gem</code> files into the <code>vendor/cache</code> folder, thus
+completing the installation.</p>
+
+<p>It’s a bit confusing, but in the end it’s really only this three step process:</p>
+
+<ul>
+  <li>Copy your private gem’s <code>.gem</code> file into <code>vendor/cache</code></li>
+  <li>Run <code>bundle install --no-cache</code></li>
+  <li>Run <code>bundle package --all</code></li>
+</ul>
+
+<p>Then of course you’ll need to push those files to Heroku:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>git add .
+<span class="lineno">2</span> <span class="nv">$ </span>git commit -m Installed my private gem
+<span class="lineno">3</span> <span class="nv">$ </span>git push heroku master</code></pre></div>
+
+<p>Refresh your browser, and you’ll notice that your gem will now be listed.</p>
+
+<p>Now all you have to do to install the private gem in your application is add
+the URL to your Heroku app that’s hosting the gems to your Gemfile. For
+example:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File myapp/Gemfile</span>
+<span class="lineno">2</span> <span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
+<span class="lineno">3</span> <span class="n">source</span> <span class="s1">&#39;http://private-gem-server.herokuapp.com&#39;</span>
+<span class="lineno">4</span> 
+<span class="lineno">5</span> <span class="n">gem</span> <span class="s1">&#39;my_private_app&#39;</span></code></pre></div>
+
+
+    </div>
+  </section>
+
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/code/2013/11/25/temporary-linux-swap/">
+          How to Create A Swap File without a Partition
+        </a>
+      </h2>
+      <p class="post-meta">
+        Nov 25, 2013
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>So this will be a very short article, but it is something I find very useful
+from time-to-time, especially when compiling code on a cheap cloud server with
+very limited resources. Here’s how to enable a temporary swap file without
+having to have a partition dedicated to it:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/swap <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span>2048
+<span class="lineno">2</span> sudo mkswap /swap
+<span class="lineno">3</span> sudo swapon /swap</code></pre></div>
+
+<p>And that’s it! Just change the <code>2048</code> in <code>count=2048</code> to however many kilobytes
+you’d like the swap file to be.</p>
+
+    </div>
+  </section>
+
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/2013/01/09/simple-rails-cms/">
+          A Simple Rails CMS
+        </a>
+      </h2>
+      <p class="post-meta">
+        Jan 9, 2013
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>If you’re building a website, you’re no doubt going to want to add some dynamic
+content to it. In Ruby on Rails, this is a surprisingly easy task and can be
+set up in just a few minutes. No gems required.</p>
+
+<p>To get started, first set up a <code>Contents</code> model:</p>
+
+<pre><code>rails g contents slug:string format:string title:string author:string body:text
+</code></pre>
+
+<p>Then modify the migration file that was created so it includes a default value
+for <code>:format</code> and has a unique index for <code>:slug</code>:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno"> 1</span> <span class="c1"># File: db/migrate/*_create_contents.rb</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="k">class</span> <span class="nc">CreateContents</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+<span class="lineno"> 4</span>   <span class="k">def</span> <span class="nf">change</span>
+<span class="lineno"> 5</span>     <span class="n">create_table</span> <span class="ss">:contents</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+<span class="lineno"> 6</span>       <span class="n">t</span><span class="o">.</span><span class="n">string</span>  <span class="ss">:slug</span>
+<span class="lineno"> 7</span>       <span class="n">t</span><span class="o">.</span><span class="n">string</span>  <span class="ss">:format</span><span class="p">,</span> <span class="ss">default</span><span class="p">:</span> <span class="s2">&quot;html&quot;</span>
+<span class="lineno"> 8</span>       <span class="n">t</span><span class="o">.</span><span class="n">string</span>  <span class="ss">:title</span>
+<span class="lineno"> 9</span>       <span class="n">t</span><span class="o">.</span><span class="n">string</span>  <span class="ss">:author</span>
+<span class="lineno">10</span>       <span class="n">t</span><span class="o">.</span><span class="n">text</span>    <span class="ss">:body</span>
+<span class="lineno">11</span>       <span class="n">t</span><span class="o">.</span><span class="n">timestamps</span>
+<span class="lineno">12</span>     <span class="k">end</span>
+<span class="lineno">13</span> 
+<span class="lineno">14</span>     <span class="n">add_index</span> <span class="ss">:contents</span><span class="p">,</span> <span class="ss">:slug</span><span class="p">,</span> <span class="ss">unique</span><span class="p">:</span> <span class="kp">true</span>
+<span class="lineno">15</span>   <span class="k">end</span>
+<span class="lineno">16</span> <span class="k">end</span></code></pre></div>
+
+<p>Now configure the <code>Content</code> model so it parameterizes the title into a slug,
+which is what we’ll be using for the URL to display the content. You’ll also
+need to set up the accessible fields, and validations:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno"> 1</span> <span class="c1"># File: app/models/content.rb</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="k">class</span> <span class="nc">Content</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+<span class="lineno"> 4</span>   <span class="n">attr_accessible</span>               <span class="ss">:title</span><span class="p">,</span>
+<span class="lineno"> 5</span>                                 <span class="ss">:body</span><span class="p">,</span>
+<span class="lineno"> 6</span>                                 <span class="ss">:author</span><span class="p">,</span>
+<span class="lineno"> 7</span>                                 <span class="ss">:format</span>
+<span class="lineno"> 8</span> 
+<span class="lineno"> 9</span>   <span class="n">validates_presence_of</span>         <span class="ss">:title</span><span class="p">,</span>
+<span class="lineno">10</span>                                 <span class="ss">:format</span><span class="p">,</span>
+<span class="lineno">11</span>                                 <span class="ss">:slug</span>
+<span class="lineno">12</span> 
+<span class="lineno">13</span>   <span class="n">before_validation</span> <span class="k">do</span>
+<span class="lineno">14</span>     <span class="nb">self</span><span class="o">.</span><span class="n">slug</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">parameterize</span>
+<span class="lineno">15</span>   <span class="k">end</span>
+<span class="lineno">16</span> 
+<span class="lineno">17</span>   <span class="k">def</span> <span class="nf">to_param</span>
+<span class="lineno">18</span>     <span class="nb">self</span><span class="o">.</span><span class="n">slug</span>
+<span class="lineno">19</span>   <span class="k">end</span>
+<span class="lineno">20</span> <span class="k">end</span></code></pre></div>
+
+<p>Next create a controller that will render the requested <code>Content</code>:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno"> 1</span> <span class="c1"># File: app/controllers/contents_controller.rb</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="k">class</span> <span class="nc">ContentsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<span class="lineno"> 4</span>   <span class="k">def</span> <span class="nf">show</span>
+<span class="lineno"> 5</span>     <span class="c1"># Get the ID of the page being requested, defaulting to &#39;home&#39;</span>
+<span class="lineno"> 6</span>     <span class="vi">@id</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:id</span><span class="p">,</span> <span class="s1">&#39;home&#39;</span><span class="p">)</span>
+<span class="lineno"> 7</span> 
+<span class="lineno"> 8</span>     <span class="c1"># Get the format of the requested content</span>
+<span class="lineno"> 9</span>     <span class="vi">@format</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:format</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">)</span>
+<span class="lineno">10</span> 
+<span class="lineno">11</span>     <span class="c1"># Find the content by its slug and format</span>
+<span class="lineno">12</span>     <span class="vi">@content</span> <span class="o">=</span> <span class="no">Content</span><span class="o">.</span><span class="n">find_by_slug_and_format!</span><span class="p">(</span><span class="vi">@id</span><span class="p">,</span> <span class="vi">@format</span><span class="p">)</span>
+<span class="lineno">13</span> 
+<span class="lineno">14</span>     <span class="c1"># Render the content inline</span>
+<span class="lineno">15</span>     <span class="n">render</span> <span class="ss">inline</span><span class="p">:</span> <span class="vi">@content</span><span class="o">.</span><span class="n">body</span>
+<span class="lineno">16</span>   <span class="k">end</span>
+<span class="lineno">17</span> <span class="k">end</span></code></pre></div>
+
+<p>Configure your app’s routes:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: config/routes.rb</span>
+<span class="lineno">2</span> 
+<span class="lineno">3</span> <span class="no">MyApp</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+<span class="lineno">4</span>   <span class="n">root</span> <span class="ss">to</span><span class="p">:</span> <span class="s2">&quot;contents#show&quot;</span>
+<span class="lineno">5</span>   <span class="n">get</span> <span class="s2">&quot;contents/*id&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;contents#show&quot;</span>
+<span class="lineno">6</span> <span class="k">end</span></code></pre></div>
+
+<p>Fire up the <code>rails console</code> and create some default content:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="no">Content</span><span class="o">.</span><span class="n">create!</span> <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="ss">title</span><span class="p">:</span> <span class="s1">&#39;Home Page&#39;</span><span class="p">,</span> <span class="ss">body</span><span class="p">:</span> <span class="s1">&#39;&lt;h1&gt;&lt;%= @content.title %&gt;&lt;/h1&gt;&#39;</span></code></pre></div>
+
+<p>Now when you visit your app in the browser you’ll be presented with content that
+was pulled from the database and rendered by your application.</p>
+
+<p>This is just a very brief example of how to set this up. There’s a lot more to
+take into consideration. For example, since you can execute ERB code in your
+site’s dynamic content using this method, you’ll need to take the necessary
+security measures in the controller to ensure that malicious code or rouge
+scripts could not be executed. Which means that, unless you are the only person
+who will be editing your site’s content, you will probably want to use something
+other than Rails default template renderer, such as
+<a href="https://github.com/Shopify/liquid">Shopify’s Liquid</a> template language, since
+it leaves your site open to too many vulnerabilities otherwise.</p>
+
+<p>You’ll also need to set up the controller to edit the content from within the
+browser. I left that out of the above example for the sake of brevity, since
+it is very basic Rails code.</p>
+
+    </div>
+  </section>
+
+
+
+  <div class="pagination">
+    
+      <span>Prev</span>
+    
+
+    
+      
+        <strong>1</strong>
+      
+    
+      
+        <a href="/page2">
+          2
+        </a>
+      
+    
+
+    
+      <a href="/page2">
+        Next
+      </a>
+    
+  </div>
+
+
+
+
+          
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

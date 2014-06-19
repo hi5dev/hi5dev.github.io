@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Jekyll</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Ruby Development">
+  <link rel="canonical" href="http://hi5dev.com/code/2012/12/05/jekyll/">
+
+  <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
+  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+
+  <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
+  <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
+  <script src="/assets/yui-2a7298413fd4caa5503ee14e976bd046.js"></script>
+  <script src="/assets/pure-43ceac8f144ed47caf070f881a91b7ee.js"></script>
+  <script src="/assets/ga-0c1af228bf83b8a72685b6ac2e572780.js"></script>
+  <script src="/assets/search_results-7cf799b68d32b821f9db0c499eaf4028.js"></script>
+
+  
+  <script id="search-results-template" type="text/mustache">
+    {{#entries}}
+      <tr>
+        <td class="date">
+          <time datetime="{{ pubdate }}" pubdate>
+            {{ displaydate }}
+          </time>
+        </td>
+        <td>
+          <a href="{{ url }}">
+            {{ title }}
+          </a>
+        </td>
+      </tr>
+    {{/entries}}
+  </script>
+
+
+</head>
+
+  <body>
+    <div id="layout" class="pure-g-r">
+      <div class="sidebar pure-u-1-4">
+  <div class="header">
+    <hgroup>
+      <h1 class="brand-title">
+        <a href="/">Hi5Dev</a>
+      </h1>
+      <h2 class="brand-tagline">
+        Ruby Programming
+      </h2>
+    </hgroup>
+    <div class="nav">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/feed.xml " class="pure-button">RSS</a>
+        </li>
+        <li class="nav-item">
+          <a href="/contact " class="pure-button">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+      <div class="content pure-u-3-4">
+        <div class="main">
+          <div id="search">
+  <form action="/search" method="get" class="pure-form">
+    <input type="text"
+           id="search-query"
+           name="q"
+           placeholder="Search"
+           autocomplete="off"
+           class="pure-input-3-4"
+    >
+  </form>
+</div>
+
+
+          <section id="search-results" style="display: none;">
+            <table class="entries">
+            </table>
+          </section>
+
+          <hr/>
+
+          <section class="post" itemscope itemtype="http://schema.org/Article">
+  <header class="post-header">
+    <h2 class="post-title">
+      <a href="/code/2012/12/05/jekyll/" itemprop="url">
+        <span itemprop="name">
+          Jekyll
+        </span>
+      </a>
+    </h2>
+    <p class="post-meta">
+      <span itemprop="datePublished">
+        Dec 5, 2012
+      </span>
+
+      
+
+      
+    </p>
+  </header>
+  <div class="post-description" itemprop="articleBody">
+    <p>I have decided to use <a href="http://pages.github.com/">github pages</a> to manage my
+website. It’s a fantastic setup; ideal for a programmer. It gives me complete
+control over my website, at the same time as keeping it simple, and easy to
+manage.</p>
+
+<p>The main reason I’m using github pages is because it comes with Jekyll built in.
+And having the entire website kept in a git repository means I can at anytime
+pull the entire website off of one server, and push it onto a new one without
+having to muck about on a server. It also makes it a whole lot easier to back up
+the website. All I have to do is push the source code into another repository
+after I push it to where it’s published live.</p>
+
+  </div>
+</section>
+
+
+          
+            <div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var url = document.location.protocol + "//" +
+            document.location.host +
+            document.location.pathname
+
+    , disqus_shortname = 'hi5dev'
+    , disqus_identifier = url
+    , disqus_url = url;
+
+  (function() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+<noscript>
+  Please enable JavaScript to view the
+  <a href="http://disqus.com/?ref_noscript">
+    comments powered by Disqus.
+  </a>
+</noscript>
+
+<a href="http://disqus.com" class="dsq-brlink">
+  comments powered by
+  <span class="logo-disqus">Disqus</span>
+</a>
+
+          
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

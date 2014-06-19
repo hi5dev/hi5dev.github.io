@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Using Foreman with Jekyll</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Ruby Development">
+  <link rel="canonical" href="http://hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/">
+
+  <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
+  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+
+  <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
+  <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
+  <script src="/assets/yui-2a7298413fd4caa5503ee14e976bd046.js"></script>
+  <script src="/assets/pure-43ceac8f144ed47caf070f881a91b7ee.js"></script>
+  <script src="/assets/ga-0c1af228bf83b8a72685b6ac2e572780.js"></script>
+  <script src="/assets/search_results-7cf799b68d32b821f9db0c499eaf4028.js"></script>
+
+  
+  <script id="search-results-template" type="text/mustache">
+    {{#entries}}
+      <tr>
+        <td class="date">
+          <time datetime="{{ pubdate }}" pubdate>
+            {{ displaydate }}
+          </time>
+        </td>
+        <td>
+          <a href="{{ url }}">
+            {{ title }}
+          </a>
+        </td>
+      </tr>
+    {{/entries}}
+  </script>
+
+
+</head>
+
+  <body>
+    <div id="layout" class="pure-g-r">
+      <div class="sidebar pure-u-1-4">
+  <div class="header">
+    <hgroup>
+      <h1 class="brand-title">
+        <a href="/">Hi5Dev</a>
+      </h1>
+      <h2 class="brand-tagline">
+        Ruby Programming
+      </h2>
+    </hgroup>
+    <div class="nav">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/feed.xml " class="pure-button">RSS</a>
+        </li>
+        <li class="nav-item">
+          <a href="/contact " class="pure-button">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+      <div class="content pure-u-3-4">
+        <div class="main">
+          <div id="search">
+  <form action="/search" method="get" class="pure-form">
+    <input type="text"
+           id="search-query"
+           name="q"
+           placeholder="Search"
+           autocomplete="off"
+           class="pure-input-3-4"
+    >
+  </form>
+</div>
+
+
+          <section id="search-results" style="display: none;">
+            <table class="entries">
+            </table>
+          </section>
+
+          <hr/>
+
+          <section class="post" itemscope itemtype="http://schema.org/Article">
+  <header class="post-header">
+    <h2 class="post-title">
+      <a href="/jekyll/2014/06/13/using-foreman-with-jekyll/" itemprop="url">
+        <span itemprop="name">
+          Using Foreman with Jekyll
+        </span>
+      </a>
+    </h2>
+    <p class="post-meta">
+      <span itemprop="datePublished">
+        Jun 13, 2014
+      </span>
+
+      
+
+      
+    </p>
+  </header>
+  <div class="post-description" itemprop="articleBody">
+    <p>When building a website with Jekyll, you might want the site to automatically
+rebuild when you make a change. You can do that with the <code>jekyll build --watch</code>
+command. Then of course you’ll want to serve the website so you can preview it
+in the browser. For that there’s the <code>jekyll serve</code> command.</p>
+
+<p>Running both commands at the same time requires opening separate terminal tabs.
+This can be a little bit frustrating. Especially when you start adding more
+features to your site. For example, if you want to use compass to compile SASS,
+you’ll need to open a 3rd tab to run <code>compass watch</code>.</p>
+
+<p>Doing this over and over again every time you want to edit your site can become
+a little tedious. Each time you’ll have to open at least two tabs, and remember
+which commands to run to get things started. And, if you haven’t worked on the
+site for a while, you might not remember all the components you’re using.</p>
+
+<p>Fortunately there’s an awesome gem called
+<a href="//github.com/ddollar/foreman">Foreman</a> that can help you out with this. Here’s
+how to get it up and running with Jekyll.</p>
+
+<p>First, install the gem:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>gem install foreman</code></pre></div>
+
+<p>Then, create a new file called <code>Procfile</code> in the root of your Jekyll project
+folder, and add the tasks you want running in parallel. Using the three tasks
+mentioned above as an example, your <code>Procfile</code> might look something like this:</p>
+
+<div class="highlight"><pre><code class="yaml"><span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">jekyll build --watch</span>
+<span class="l-Scalar-Plain">server</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">jekyll serve</span>
+<span class="l-Scalar-Plain">compass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">compass watch</span></code></pre></div>
+
+<p>To start all the processes in parallel, just run:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>foreman start</code></pre></div>
+
+<p>Now you can manage and monitor all the processes in just one tab. Pressing
+CTRL+C will automatically send the KILL signal to every task for you.</p>
+
+  </div>
+</section>
+
+
+          
+            <div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var url = document.location.protocol + "//" +
+            document.location.host +
+            document.location.pathname
+
+    , disqus_shortname = 'hi5dev'
+    , disqus_identifier = url
+    , disqus_url = url;
+
+  (function() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+<noscript>
+  Please enable JavaScript to view the
+  <a href="http://disqus.com/?ref_noscript">
+    comments powered by Disqus.
+  </a>
+</noscript>
+
+<a href="http://disqus.com" class="dsq-brlink">
+  comments powered by
+  <span class="logo-disqus">Disqus</span>
+</a>
+
+          
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

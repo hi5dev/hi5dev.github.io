@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Hi5 Development</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Ruby Development">
+  <link rel="canonical" href="http://hi5dev.com/page2/">
+
+  <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
+  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+
+  <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
+  <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
+  <script src="/assets/yui-2a7298413fd4caa5503ee14e976bd046.js"></script>
+  <script src="/assets/pure-43ceac8f144ed47caf070f881a91b7ee.js"></script>
+  <script src="/assets/ga-0c1af228bf83b8a72685b6ac2e572780.js"></script>
+  <script src="/assets/search_results-7cf799b68d32b821f9db0c499eaf4028.js"></script>
+
+  
+  <script id="search-results-template" type="text/mustache">
+    {{#entries}}
+      <tr>
+        <td class="date">
+          <time datetime="{{ pubdate }}" pubdate>
+            {{ displaydate }}
+          </time>
+        </td>
+        <td>
+          <a href="{{ url }}">
+            {{ title }}
+          </a>
+        </td>
+      </tr>
+    {{/entries}}
+  </script>
+
+
+</head>
+
+  <body>
+    <div id="layout" class="pure-g-r">
+      <div class="sidebar pure-u-1-4">
+  <div class="header">
+    <hgroup>
+      <h1 class="brand-title">
+        <a href="/">Hi5Dev</a>
+      </h1>
+      <h2 class="brand-tagline">
+        Ruby Programming
+      </h2>
+    </hgroup>
+    <div class="nav">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/feed.xml " class="pure-button">RSS</a>
+        </li>
+        <li class="nav-item">
+          <a href="/contact " class="pure-button">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+      <div class="content pure-u-3-4">
+        <div class="main">
+          <div id="search">
+  <form action="/search" method="get" class="pure-form">
+    <input type="text"
+           id="search-query"
+           name="q"
+           placeholder="Search"
+           autocomplete="off"
+           class="pure-input-3-4"
+    >
+  </form>
+</div>
+
+
+          <section id="search-results" style="display: none;">
+            <table class="entries">
+            </table>
+          </section>
+
+          <hr/>
+
+          
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/2013/01/01/active-record-session-store/">
+          ActiveRecord::Session::Store
+        </a>
+      </h2>
+      <p class="post-meta">
+        Jan 1, 2013
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>Recently I ran into a cookie overflow issue when using the
+<a href="https://github.com/mperham/sidekiq">Sidekiq</a> gem for background processing. To
+solve the issue, I had to abandon using cookies for session storage, and instead
+use the database for sessions. It’s very easy to set up, and the instructions
+can be found in any Rails app in the <code>config/initializers/session_store.rb</code>
+file.</p>
+
+<p>Something that isn’t outlined in the initializer, however, is that if you also
+create a Session model, but instead of descending from <code>ActiveRecord::Base</code>,
+descend from <code>ActiveRecord::Session::Store</code>, you can access your app’s sessions
+from anywhere in your application:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: app/models/session.rb</span>
+<span class="lineno">2</span> <span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Store</span><span class="p">;</span> <span class="k">end</span></code></pre></div>
+
+<p>The <code>Session</code> object will behave like any other <code>ActiveRecord</code> model, with the
+exception of the <code>#data</code> method, which will return a <code>Hash</code> object.</p>
+
+<p>Here’s an example of how you could use this to broadcast a message to all your
+site’s current visitors:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="no">Session</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">session</span><span class="o">|</span>
+<span class="lineno">2</span>   <span class="n">session</span><span class="o">.</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Flash</span><span class="o">::</span><span class="no">FlashHash</span><span class="o">.</span><span class="n">new</span>
+<span class="lineno">3</span>   <span class="n">session</span><span class="o">.</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="ss">:alert</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;Server going down in 10 minutes for scheduled maintenance.&#39;</span>
+<span class="lineno">4</span>   <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
+<span class="lineno">5</span> <span class="k">end</span></code></pre></div>
+
+<p>You could even use it to display random site promotions. For example, using the
+<a href="https://github.com/adamwiggins/clockwork">clockwork</a> gem, you could do this:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno"> 1</span> <span class="c1"># File: lib/promotions.rb</span>
+<span class="lineno"> 2</span> <span class="nb">require</span> <span class="s1">&#39;clockwork&#39;</span>
+<span class="lineno"> 3</span> <span class="nb">require</span> <span class="s1">&#39;config/boot&#39;</span>
+<span class="lineno"> 4</span> <span class="nb">require</span> <span class="s1">&#39;config/environment&#39;</span>
+<span class="lineno"> 5</span> 
+<span class="lineno"> 6</span> <span class="n">every</span><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span> <span class="s1">&#39;random.promos&#39;</span><span class="p">)</span> <span class="k">do</span>
+<span class="lineno"> 7</span>   <span class="no">Session</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">session</span><span class="o">|</span>
+<span class="lineno"> 8</span>     <span class="n">promo</span> <span class="o">=</span> <span class="no">Promo</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sample</span>
+<span class="lineno"> 9</span> 
+<span class="lineno">10</span>     <span class="n">session</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Flash</span><span class="o">::</span><span class="no">FlashHash</span><span class="o">.</span><span class="n">new</span>
+<span class="lineno">11</span>     <span class="n">session</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="ss">:promo</span><span class="o">]</span> <span class="o">=</span> <span class="n">promo</span><span class="o">.</span><span class="n">call_to_action</span>
+<span class="lineno">12</span>     <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
+<span class="lineno">13</span>   <span class="k">end</span>
+<span class="lineno">14</span> <span class="k">end</span></code></pre></div>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: app/views/application.html.erb</span>
+<span class="lineno">2</span> <span class="o">&lt;</span><span class="sx">% if </span><span class="n">flash</span><span class="o">[</span><span class="ss">:promo</span><span class="o">].</span><span class="n">present?</span> <span class="sx">%&gt;</span>
+<span class="lineno">3</span> <span class="sx">  &lt;div id=&quot;promo&quot;&gt;</span><span class="o">&lt;%=</span> <span class="n">raw</span> <span class="n">flash</span><span class="o">[</span><span class="ss">:promo</span><span class="o">]</span> <span class="sx">%&gt;&lt;/div&gt;</span>
+<span class="lineno">4</span> <span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span></code></pre></div>
+
+<p>Now the next time your site’s current visitors visit a new page they’ll be
+presented with the promotion, while any new visitors won’t see any promos until
+they’ve been browsing your site for at least 1 minute.</p>
+
+    </div>
+  </section>
+
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/code/2012/12/17/multiple-route-files-in-rails/">
+          Multiple Route Files in Rails
+        </a>
+      </h2>
+      <p class="post-meta">
+        Dec 17, 2012
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>Lately I have been working on a Rails project with routes that have been getting
+more and more complicated. The project has three different user types. Each user
+has routes that are only visible when they’re signed in, plus public routes,
+with some that are only visible when certain users are signed in, and some of
+the routes are repeated under different namespaces, or with different
+constraints.</p>
+
+<p>Since the routes file has been expanding over time, I decided that it would be
+best to split it up into smaller, easier to read and manage files. After doing a
+search on multiple rails route files to find out how to configure my application
+for this, I found this simple one line solution that you can add to your
+<code>config/application.rb</code> file in a Rails 3.2 or higher application:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="n">config</span><span class="o">.</span><span class="n">paths</span><span class="o">[</span><span class="s2">&quot;config/routes&quot;</span><span class="o">]</span> <span class="o">+=</span> <span class="no">Dir</span><span class="o">[</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;routes&quot;</span><span class="p">,</span> <span class="s2">&quot;*.rb&quot;</span><span class="p">)</span><span class="o">]</span></code></pre></div>
+
+<p>What that does is tell your application to use any file located in
+<code>config/routes</code> as a routing file.</p>
+
+<p>However, there were a couple of drawbacks I found in using this method. First,
+since <code>config/application.rb</code> is only loaded once when your application boots,
+if you were to add, rename, or delete any files in the <code>config/routes</code>
+directory, you would need to restart your application for the changes to become
+effective.</p>
+
+<p>But the biggest issue, and the reason I chose not to use this method, is that it
+does not allow you to specify the order in which the routes are loaded. And for
+the application I’m working on the routes need to be loaded in a specific order.</p>
+
+<p>So I ended up having to write my own method of using multiple route files, which
+is in the form of a very simple routing extension that looks like this:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno"> 1</span> <span class="c1"># File: config/initializers/routing_extensions.rb</span>
+<span class="lineno"> 2</span> <span class="k">class</span> <span class="nc">ActionDispatch</span><span class="o">::</span><span class="no">Routing</span><span class="o">::</span><span class="no">Mapper</span>
+<span class="lineno"> 3</span>   <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">)</span>
+<span class="lineno"> 4</span>     <span class="n">names</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span>
+<span class="lineno"> 5</span>       <span class="n">file</span> <span class="o">=</span> <span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;routes&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="o">.</span><span class="n">to_s</span><span class="si">}</span><span class="s2">.rb&quot;</span><span class="p">)</span>
+<span class="lineno"> 6</span>       <span class="n">code</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="lineno"> 7</span>       <span class="nb">eval</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+<span class="lineno"> 8</span>     <span class="k">end</span>
+<span class="lineno"> 9</span>   <span class="k">end</span>
+<span class="lineno">10</span> <span class="k">end</span></code></pre></div>
+
+<p>Now I can specify the exact order the external route files should be loaded in,
+when the routes should be loaded, and even use them more than once. For example,
+here is a very small portion of the routes in the application I am working on
+right now:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno"> 1</span> <span class="c1"># File: config/routes.rb</span>
+<span class="lineno"> 2</span> <span class="no">AppName</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+<span class="lineno"> 3</span>   <span class="n">devise_for</span> <span class="ss">:admin</span><span class="p">,</span> <span class="ss">:user</span>
+<span class="lineno"> 4</span> 
+<span class="lineno"> 5</span>   <span class="n">authenticated</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="n">draw</span> <span class="ss">:authenticated</span> <span class="p">}</span>
+<span class="lineno"> 6</span> 
+<span class="lineno"> 7</span>   <span class="n">authenticated</span><span class="p">(</span><span class="ss">:admin</span><span class="p">)</span> <span class="k">do</span>
+<span class="lineno"> 8</span>     <span class="n">namespace</span><span class="p">(</span><span class="ss">:admin</span><span class="p">)</span> <span class="p">{</span> <span class="n">draw</span> <span class="ss">:authenticated</span> <span class="p">}</span>
+<span class="lineno"> 9</span>   <span class="k">end</span>
+<span class="lineno">10</span> 
+<span class="lineno">11</span>   <span class="n">draw</span> <span class="ss">:public</span>
+<span class="lineno">12</span> <span class="k">end</span></code></pre></div>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: config/routes/authenticated.rb</span>
+<span class="lineno">2</span> <span class="n">resource</span> <span class="ss">:dashboard</span><span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
+<span class="lineno">3</span> <span class="n">resource</span> <span class="ss">:preferences</span><span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:edit</span><span class="p">,</span> <span class="ss">:update</span><span class="o">]</span>
+<span class="lineno">4</span> <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">&quot;dashboards#show&quot;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: config/routes/public.rb</span>
+<span class="lineno">2</span> <span class="n">get</span> <span class="s2">&quot;/about&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;about#show&quot;</span>
+<span class="lineno">3</span> <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">&quot;about#show&quot;</span></code></pre></div>
+
+
+    </div>
+  </section>
+
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/code/2012/12/12/simple-form/">
+          SimpleForm
+        </a>
+      </h2>
+      <p class="post-meta">
+        Dec 12, 2012
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>Since I’m hosting my website on Github I have to use a 3rd party service for
+collecting data from HTML forms. I almost opted out of a static website content
+generator (Jekyll in this case) because of the bad experiences I have had in the
+past with online form tools.</p>
+
+<p>Most of the online form tools want to include some sort of branding on your
+form, and require that you insert a script tag where you want the form to go.
+This causes all kinds of issues, not the least of which is the lack of being
+able to modify the form’s styling to match your existing website since most of
+them slap the form into your website in an embedded iframe.</p>
+
+<p>Fortunately I discovered a really simple hosted form tool called
+<a href="http://getsimpleform.com/">SimpleForm</a> that doesn’t care about branding, and
+doesn’t use iframes and script tags. All it does is provide you with a place to
+send your form data to. That’s it.</p>
+
+    </div>
+  </section>
+
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/code/2012/12/11/foundation-3/">
+          Foundation 3
+        </a>
+      </h2>
+      <p class="post-meta">
+        Dec 11, 2012
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>I’ve decided to build my website using <a href="http://foundation.zurb.com/">Foundation 3</a>,
+which claims to be “the most advanced responsive front-end framework in the
+world.”</p>
+
+<p>So far the results have been pretty clean, from a developer’s point of view,
+anyway, and I am actually very impressed. I’m thinking of using this framework
+to develop a Shopify theme. I’ve attempted to build a Shopify theme in the past
+using Twitter’s <a href="http://twitter.github.com/bootstrap/">Bootstrap</a> CSS framework,
+but I found it rather bulky, and difficult to work with, to be honest. So I
+never really got too far with it.</p>
+
+<p>What I like the most about this CSS framework is how clean the responsive layout
+is, and how smooth it transitions when you resize the browser. Go ahead and try
+resizing your browser now to watch how quickly, and smoothly it makes the
+transition. The Twitter Bootstrap responsive theme relies on JavaScript, which
+makes it really slow, at least on my computer, when resizing the window.</p>
+
+    </div>
+  </section>
+
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/code/2012/12/05/jekyll/">
+          Jekyll
+        </a>
+      </h2>
+      <p class="post-meta">
+        Dec 5, 2012
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>I have decided to use <a href="http://pages.github.com/">github pages</a> to manage my
+website. It’s a fantastic setup; ideal for a programmer. It gives me complete
+control over my website, at the same time as keeping it simple, and easy to
+manage.</p>
+
+<p>The main reason I’m using github pages is because it comes with Jekyll built in.
+And having the entire website kept in a git repository means I can at anytime
+pull the entire website off of one server, and push it onto a new one without
+having to muck about on a server. It also makes it a whole lot easier to back up
+the website. All I have to do is push the source code into another repository
+after I push it to where it’s published live.</p>
+
+    </div>
+  </section>
+
+
+
+  <div class="pagination">
+    
+      <a href="/">
+        Prev
+      </a>
+    
+
+    
+      
+        <a href="/index.html">
+          1
+        </a>
+      
+    
+      
+        <strong>2</strong>
+      
+    
+
+    
+      <span>
+        Next
+      </span>
+    
+  </div>
+
+
+
+
+          
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

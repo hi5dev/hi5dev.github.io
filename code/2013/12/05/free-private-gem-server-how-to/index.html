@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Get Your Own Free Private Gem Server</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Ruby Development">
+  <link rel="canonical" href="http://hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/">
+
+  <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
+  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+
+  <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
+  <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
+  <script src="/assets/yui-2a7298413fd4caa5503ee14e976bd046.js"></script>
+  <script src="/assets/pure-43ceac8f144ed47caf070f881a91b7ee.js"></script>
+  <script src="/assets/ga-0c1af228bf83b8a72685b6ac2e572780.js"></script>
+  <script src="/assets/search_results-7cf799b68d32b821f9db0c499eaf4028.js"></script>
+
+  
+  <script id="search-results-template" type="text/mustache">
+    {{#entries}}
+      <tr>
+        <td class="date">
+          <time datetime="{{ pubdate }}" pubdate>
+            {{ displaydate }}
+          </time>
+        </td>
+        <td>
+          <a href="{{ url }}">
+            {{ title }}
+          </a>
+        </td>
+      </tr>
+    {{/entries}}
+  </script>
+
+
+</head>
+
+  <body>
+    <div id="layout" class="pure-g-r">
+      <div class="sidebar pure-u-1-4">
+  <div class="header">
+    <hgroup>
+      <h1 class="brand-title">
+        <a href="/">Hi5Dev</a>
+      </h1>
+      <h2 class="brand-tagline">
+        Ruby Programming
+      </h2>
+    </hgroup>
+    <div class="nav">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/feed.xml " class="pure-button">RSS</a>
+        </li>
+        <li class="nav-item">
+          <a href="/contact " class="pure-button">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+      <div class="content pure-u-3-4">
+        <div class="main">
+          <div id="search">
+  <form action="/search" method="get" class="pure-form">
+    <input type="text"
+           id="search-query"
+           name="q"
+           placeholder="Search"
+           autocomplete="off"
+           class="pure-input-3-4"
+    >
+  </form>
+</div>
+
+
+          <section id="search-results" style="display: none;">
+            <table class="entries">
+            </table>
+          </section>
+
+          <hr/>
+
+          <section class="post" itemscope itemtype="http://schema.org/Article">
+  <header class="post-header">
+    <h2 class="post-title">
+      <a href="/code/2013/12/05/free-private-gem-server-how-to/" itemprop="url">
+        <span itemprop="name">
+          Get Your Own Free Private Gem Server
+        </span>
+      </a>
+    </h2>
+    <p class="post-meta">
+      <span itemprop="datePublished">
+        Dec 5, 2013
+      </span>
+
+      
+
+      
+    </p>
+  </header>
+  <div class="post-description" itemprop="articleBody">
+    <p>Using Heroku you can privately host your gems in just a couple of minutes.
+Here’s how.</p>
+
+<p>Start by creating an empty project folder, and add a Gemfile with only the
+source and ruby version:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: Gemfile</span>
+<span class="lineno">2</span> <span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
+<span class="lineno">3</span> <span class="n">ruby</span> <span class="s1">&#39;2.0.0&#39;</span></code></pre></div>
+
+<p>Then run <code>bundle</code> to generate <code>Gemfile.lock</code>.</p>
+
+<p>Next, create a Procfile with the following content:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="c"># File: Procfile</span>
+<span class="lineno">2</span> web: gem server -p <span class="nv">$PORT</span></code></pre></div>
+
+<p>Then set up Git:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>git init .
+<span class="lineno">2</span> <span class="nv">$ </span>git add .
+<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Initial commit</code></pre></div>
+
+<p>Create a new Heroku app and push your application to Heroku:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku create
+<span class="lineno">2</span> <span class="nv">$ </span>git push heroku master</code></pre></div>
+
+<p>Then launch your new privately hosted gem server in the browser:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku open</code></pre></div>
+
+<p>And just like that you have your very own private gem server. Now let’s push a
+gem to the server.</p>
+
+<p>First you’ll want to create a .gitignore file and add .bundle to it so we don’t
+end up pushing our local Bundler settings to heroku:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;.bundle&quot;</span> &gt;&gt; .gitignore
+<span class="lineno">2</span> <span class="nv">$ </span>git add .gitignore
+<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Ignoring the .bundle path</code></pre></div>
+
+<p>Next you’ll need a <code>vendor/cache</code> folder. This is where you’ll place your
+private <code>.gem</code> files. So go ahead and create that folder now, and copy your
+gem file into it.</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>mkdir vendor
+<span class="lineno">2</span> <span class="nv">$ </span>mkdir vendor/cache
+<span class="lineno">3</span> <span class="nv">$ </span>cp my.gem vendor/cache <span class="c"># replace &#39;my.gem&#39; with your actual gem file</span></code></pre></div>
+
+<p>This is where things can get a little tricky. In order for us to push our gem
+to Heroku, we need to first run <code>bundle install</code>. However since our gem is
+going to be privately hosted, Bundler will try and fail to download it from
+rubygems.org. So we need to cache the gem first so it doesn’t try to download
+it. Ironically, the way we do that is by using the <code>--no-cache</code> flag. Then
+you’ll need to run <code>bundle package --all</code> to vendor your gem’s dependencies
+along with the gem:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>bundle install --no-cache
+<span class="lineno">2</span> <span class="nv">$ </span>bundle package --all</code></pre></div>
+
+<p>Using <code>bundle --no-cache</code> tells Bundler that the <code>.gem</code> files have already been
+copied into the <code>vendor/cache</code> folder, and it will install those instead of
+connecting to rubygems.org. <code>bundle package --all</code> downloads the missing
+dependencies and copies their <code>.gem</code> files into the <code>vendor/cache</code> folder, thus
+completing the installation.</p>
+
+<p>It’s a bit confusing, but in the end it’s really only this three step process:</p>
+
+<ul>
+  <li>Copy your private gem’s <code>.gem</code> file into <code>vendor/cache</code></li>
+  <li>Run <code>bundle install --no-cache</code></li>
+  <li>Run <code>bundle package --all</code></li>
+</ul>
+
+<p>Then of course you’ll need to push those files to Heroku:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>git add .
+<span class="lineno">2</span> <span class="nv">$ </span>git commit -m Installed my private gem
+<span class="lineno">3</span> <span class="nv">$ </span>git push heroku master</code></pre></div>
+
+<p>Refresh your browser, and you’ll notice that your gem will now be listed.</p>
+
+<p>Now all you have to do to install the private gem in your application is add
+the URL to your Heroku app that’s hosting the gems to your Gemfile. For
+example:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File myapp/Gemfile</span>
+<span class="lineno">2</span> <span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
+<span class="lineno">3</span> <span class="n">source</span> <span class="s1">&#39;http://private-gem-server.herokuapp.com&#39;</span>
+<span class="lineno">4</span> 
+<span class="lineno">5</span> <span class="n">gem</span> <span class="s1">&#39;my_private_app&#39;</span></code></pre></div>
+
+
+  </div>
+</section>
+
+
+          
+            <div id="disqus_thread"></div>
+
+<script type="text/javascript">
+  var url = document.location.protocol + "//" +
+            document.location.host +
+            document.location.pathname
+
+    , disqus_shortname = 'hi5dev'
+    , disqus_identifier = url
+    , disqus_url = url;
+
+  (function() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+<noscript>
+  Please enable JavaScript to view the
+  <a href="http://disqus.com/?ref_noscript">
+    comments powered by Disqus.
+  </a>
+</noscript>
+
+<a href="http://disqus.com" class="dsq-brlink">
+  comments powered by
+  <span class="logo-disqus">Disqus</span>
+</a>
+
+          
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
