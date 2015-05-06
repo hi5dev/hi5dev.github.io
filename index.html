@@ -9,7 +9,7 @@
   <link rel="canonical" href="http://hi5dev.com/">
 
   <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
-  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+  <link rel="stylesheet" href="/assets/site-d3245521525be3916d3889e980280e76.css">
 
   <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
   <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
@@ -67,7 +67,8 @@
 
       <div class="content pure-u-3-4">
         <div class="main">
-          <div id="search">
+          
+            <div id="search">
   <form action="/search" method="get" class="pure-form">
     <input type="text"
            id="search-query"
@@ -80,12 +81,13 @@
 </div>
 
 
-          <section id="search-results" style="display: none;">
-            <table class="entries">
-            </table>
-          </section>
+            <section id="search-results" style="display: none;">
+              <table class="entries">
+              </table>
+            </section>
 
-          <hr/>
+            <hr/>
+          
 
           
   <section class="post">
@@ -120,18 +122,21 @@ the code for this article hosted on
 
 <div class="highlight"><pre><code class="bash"><span class="nv">$ </span>rails new flash_marketing
 <span class="nv">$ </span><span class="nb">cd </span>flash_marketing
-<span class="nv">$ </span>rake db:create</code></pre></div>
+<span class="nv">$ </span>rake db:create
+</code></pre></div>
 
 <p>Next, install <code>activerecord-session_store</code>:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;gem &#39;activerecord-session_store&#39;&quot;</span> &gt;&gt; Gemfile
 <span class="nv">$ </span>bundle
 <span class="nv">$ </span>rails g active_record:session_migration
-<span class="nv">$ </span>rake db:migrate</code></pre></div>
+<span class="nv">$ </span>rake db:migrate
+</code></pre></div>
 
 <p>Then edit <code>config/initializers/session_store.rb</code> and update it to the following:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">session_store</span> <span class="ss">:active_record_store</span></code></pre></div>
+<div class="highlight"><pre><code class="ruby"><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">session_store</span> <span class="ss">:active_record_store</span>
+</code></pre></div>
 
 <h2 id="custom-session-model">Custom Session Model</h2>
 
@@ -142,7 +147,8 @@ session outside of the scope of the current user.</p>
 <p>Create <code>app/models/session.rb</code> and add the following content:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">SessionStore</span><span class="o">::</span><span class="no">Session</span>
-<span class="k">end</span></code></pre></div>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>Normally we can only access a single user’s session data in the views or
 controllers. Using this model we have access to every user’s session, not just
@@ -160,7 +166,8 @@ adding a <code>flash</code> method to our <code>Session</code> model:</p>
     <span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="p">{</span><span class="s1">&#39;flashes&#39;</span> <span class="o">=&gt;</span> <span class="p">{},</span> <span class="s1">&#39;discard&#39;</span> <span class="o">=&gt;</span> <span class="o">[]</span><span class="p">}</span>
     <span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="s1">&#39;flashes&#39;</span><span class="o">][</span><span class="nb">id</span><span class="o">.</span><span class="n">to_sym</span><span class="o">]</span> <span class="o">=</span> <span class="n">msg</span>
   <span class="k">end</span>
-<span class="k">end</span></code></pre></div>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>Now we can display flash messages to any of our site’s visitors. Just keep in
 mind that we’re not actually using
@@ -172,32 +179,37 @@ lines to <code>app/views/application.html.erb</code> somewhere in the body:</p>
 
 <div class="highlight"><pre><code class="erb"><span class="cp">&lt;%</span> <span class="n">flash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">id</span><span class="p">,</span> <span class="n">msg</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
 <span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">content_tag</span> <span class="ss">:div</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="ss">class</span><span class="p">:</span> <span class="s2">&quot;flash_</span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span></code></pre></div>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</code></pre></div>
 
 <h2 id="see-it-in-action">See it in Action</h2>
 
 <p>So we can actually test this out, let’s remove the default Rails view by adding
 our own home page:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>rails g controller home show</code></pre></div>
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>rails g controller home show
+</code></pre></div>
 
 <p>And then add that as our root path in <code>config/routes.rb</code>:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
   <span class="n">root</span> <span class="ss">to</span><span class="p">:</span> <span class="s1">&#39;home#show&#39;</span>
-<span class="k">end</span></code></pre></div>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>To see it action, open up the application in your browser. Doing so will
 automatically create a new session record. Next, open a Rails console so you can
 see what’s going on:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="n">session</span> <span class="o">=</span> <span class="no">Session</span><span class="o">.</span><span class="n">first</span>
-<span class="c1"># =&gt; #&lt;Session id: 1, session_id: &quot;f28ae9f7dd2066023be808c3b337e390&quot;, data: &quot;BAh7BkkiEF9jc3JmX3Rva2VuBjoGRUZJIjFZYnFUb25sSlFXVV...&quot;, created_at: &quot;2014-06-16 19:49:07&quot;, updated_at: &quot;2014-06-16 19:49:07&quot;&gt;</span></code></pre></div>
+<span class="c1"># =&gt; #&lt;Session id: 1, session_id: &quot;f28ae9f7dd2066023be808c3b337e390&quot;, data: &quot;BAh7BkkiEF9jc3JmX3Rva2VuBjoGRUZJIjFZYnFUb25sSlFXVV...&quot;, created_at: &quot;2014-06-16 19:49:07&quot;, updated_at: &quot;2014-06-16 19:49:07&quot;&gt;</span>
+</code></pre></div>
 
 <p>If you inspect <code>session.data</code>, you’ll notice that it returns a Hash:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="n">session</span><span class="o">.</span><span class="n">data</span>
-<span class="c1"># =&gt; {&quot;_csrf_token&quot;=&gt;&quot;YbqTonlJQWUQKTU/jLQFZVha7EiqN+uFlGO8g5nFgkg=&quot;}</span></code></pre></div>
+<span class="c1"># =&gt; {&quot;_csrf_token&quot;=&gt;&quot;YbqTonlJQWUQKTU/jLQFZVha7EiqN+uFlGO8g5nFgkg=&quot;}</span>
+</code></pre></div>
 
 <p>This is because it’s automatically serialized for you on the fly. Basically
 <code>session.data</code> can be treated the same as the <code>session</code> variable in a controller
@@ -205,7 +217,8 @@ or view, except that you’ll have to call <code>session.save</code> to persist 
 ahead and try it out now by calling our custom <code>flash</code> method:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="n">session</span><span class="o">.</span><span class="n">flash</span> <span class="ss">:notice</span><span class="p">,</span> <span class="s2">&quot;hello world&quot;</span>
-<span class="n">session</span><span class="o">.</span><span class="n">save</span></code></pre></div>
+<span class="n">session</span><span class="o">.</span><span class="n">save</span>
+</code></pre></div>
 
 <p>Now refresh your browser, and you’ll see the message appear. Refresh it again,
 and it won’t appear twice, just like any normal flash message.</p>
@@ -216,7 +229,8 @@ and it won’t appear twice, just like any normal flash message.</p>
 display promotions to our site’s visitors.</p>
 
 <div class="highlight"><pre><code class="bash"><span class="nv">$ </span>rails g model promotion name call_to_action:string active:boolean
-<span class="nv">$ </span>rake db:migrate</code></pre></div>
+<span class="nv">$ </span>rake db:migrate
+</code></pre></div>
 
 <p>The <code>call_to_action</code> will be the message displayed to the user. Setting <code>active</code>
 to false will disable the promotion. You can, of course, customize it however
@@ -236,7 +250,8 @@ purposefully simple.</p>
   <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Upsale&quot;</span><span class="p">,</span>
   <span class="ss">:call_to_action</span> <span class="o">=&gt;</span> <span class="s2">&quot;Add another widget to your cart now for a 25% discount&quot;</span><span class="p">,</span>
   <span class="ss">:active</span> <span class="o">=&gt;</span> <span class="kp">true</span>
-<span class="p">)</span></code></pre></div>
+<span class="p">)</span>
+</code></pre></div>
 
 <p>Make sure to run <code>rake db:seed</code> to load the promotions into your database.</p>
 
@@ -258,7 +273,8 @@ promotions to our site’s visitors:</p>
   <span class="k">def</span> <span class="nf">viewed_promotions</span>
     <span class="n">data</span><span class="o">[</span><span class="s1">&#39;viewed_promotions&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="o">[]</span>
   <span class="k">end</span>
-<span class="k">end</span></code></pre></div>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>Go ahead and test that out now if you’d like. You should still have the Rails
 server and console running. Enter this into the console:</p>
@@ -268,7 +284,8 @@ server and console running. Enter this into the console:</p>
 <span class="no">Session</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">tap</span> <span class="k">do</span> <span class="o">|</span><span class="n">session</span><span class="o">|</span>
   <span class="n">session</span><span class="o">.</span><span class="n">display_promotion</span><span class="p">(</span><span class="n">promotion</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="kp">false</span><span class="p">)</span>
   <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
-<span class="k">end</span></code></pre></div>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>Now refresh your browser, and you should see the promotion appear. Refresh it
 again, and it goes away as expected.</p>
@@ -286,7 +303,8 @@ be using the <a href="https://github.com/tomykaira/clockwork">clockwork gem</a>.
 <p>Start by installing the gem:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;gem &#39;clockwork&#39;&quot;</span> &gt;&gt; Gemfile
-<span class="nv">$ </span>bundle</code></pre></div>
+<span class="nv">$ </span>bundle
+</code></pre></div>
 
 <p>Next, create a file called <code>lib/promotions.rb</code> and add the following content:</p>
 
@@ -304,7 +322,8 @@ be using the <a href="https://github.com/tomykaira/clockwork">clockwork gem</a>.
       <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
     <span class="p">}</span>
   <span class="p">}</span>
-<span class="k">end</span></code></pre></div>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>I won’t go over this file in depth. If you’d like to know exactly how it works
 you can read the clockwork documentation. Basically what it does is display a
@@ -312,7 +331,8 @@ random promotion to every visitor on your site every 1 minute.</p>
 
 <p>Run this command to try it out:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>bundle <span class="nb">exec </span>clockwork lib/promotions.rb</code></pre></div>
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>bundle <span class="nb">exec </span>clockwork lib/promotions.rb
+</code></pre></div>
 
 <p>Note that <code>bundle exec</code> is required in this case.</p>
 
@@ -328,7 +348,8 @@ be on the site at the moment.</p>
 <p>So let’s fix that. Add the following code to
 <code>app/controllers/application_controller.rb</code>:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">before_action</span> <span class="p">{</span> <span class="n">session</span><span class="o">[</span><span class="ss">:last_seen_at</span><span class="o">]</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}</span></code></pre></div>
+<div class="highlight"><pre><code class="ruby"><span class="n">before_action</span> <span class="p">{</span> <span class="n">session</span><span class="o">[</span><span class="ss">:last_seen_at</span><span class="o">]</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span> <span class="p">}</span>
+</code></pre></div>
 
 <p>We can now keep track of when the last time a visitor actually used the
 application. Let’s add a scope for this to the Session model:</p>
@@ -339,7 +360,8 @@ application. Let’s add a scope for this to the Session model:</p>
   <span class="k">def</span> <span class="nf">active?</span>
     <span class="n">data</span><span class="o">[</span><span class="s1">&#39;last_seen_at&#39;</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">data</span><span class="o">[</span><span class="s1">&#39;last_seen_at&#39;</span><span class="o">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="o">.</span><span class="n">minute</span><span class="o">.</span><span class="n">ago</span>
   <span class="k">end</span>
-<span class="k">end</span></code></pre></div>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>Now we can update our clockwork process to target only the active visitors:</p>
 
@@ -357,7 +379,8 @@ application. Let’s add a scope for this to the Session model:</p>
       <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
     <span class="p">}</span>
   <span class="p">}</span>
-<span class="k">end</span></code></pre></div>
+<span class="k">end</span>
+</code></pre></div>
 
 <h2 id="conclusion">Conclusion</h2>
 
@@ -403,11 +426,13 @@ code:</p>
   <span class="c1"># see the last one next time they sign on</span>
   <span class="n">session</span><span class="o">.</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="kp">nil</span>
   <span class="n">session</span><span class="o">.</span><span class="n">save</span>
-<span class="p">}</span></code></pre></div>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>Then make it an executable:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>chmod +x bin/maintenance</code></pre></div>
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>chmod +x bin/maintenance
+</code></pre></div>
 
 <p>Now your site’s active visitors will have a nice timed warning the next time you
 go to shut down the server. All you have to do is run <code>bin/maintenance</code> before
@@ -415,6 +440,8 @@ you shut it down. To accomplish the same task via pulling data from the server
 would be considerably more complex, as you can imagine.</p>
 
     </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Flash Marketing with Rails&url=http://hi5dev.com/rails/2014/06/16/flash_marketing_with_rails/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/rails/2014/06/16/flash_marketing_with_rails/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/rails/2014/06/16/flash_marketing_with_rails/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
   <section class="post">
@@ -454,7 +481,8 @@ how to get it up and running with Jekyll.</p>
 
 <p>First, install the gem:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>gem install foreman</code></pre></div>
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>gem install foreman
+</code></pre></div>
 
 <p>Then, create a new file called <code>Procfile</code> in the root of your Jekyll project
 folder, and add the tasks you want running in parallel. Using the three tasks
@@ -462,16 +490,20 @@ mentioned above as an example, your <code>Procfile</code> might look something l
 
 <div class="highlight"><pre><code class="yaml"><span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">jekyll build --watch</span>
 <span class="l-Scalar-Plain">server</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">jekyll serve</span>
-<span class="l-Scalar-Plain">compass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">compass watch</span></code></pre></div>
+<span class="l-Scalar-Plain">compass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">compass watch</span>
+</code></pre></div>
 
 <p>To start all the processes in parallel, just run:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>foreman start</code></pre></div>
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>foreman start
+</code></pre></div>
 
 <p>Now you can manage and monitor all the processes in just one tab. Pressing
 CTRL+C will automatically send the KILL signal to every task for you.</p>
 
     </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Using Foreman with Jekyll&url=http://hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
   <section class="post">
@@ -498,29 +530,34 @@ source and ruby version:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: Gemfile</span>
 <span class="lineno">2</span> <span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
-<span class="lineno">3</span> <span class="n">ruby</span> <span class="s1">&#39;2.0.0&#39;</span></code></pre></div>
+<span class="lineno">3</span> <span class="n">ruby</span> <span class="s1">&#39;2.0.0&#39;</span>
+</code></pre></div>
 
 <p>Then run <code>bundle</code> to generate <code>Gemfile.lock</code>.</p>
 
 <p>Next, create a Procfile with the following content:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="c"># File: Procfile</span>
-<span class="lineno">2</span> web: gem server -p <span class="nv">$PORT</span></code></pre></div>
+<span class="lineno">2</span> web: gem server -p <span class="nv">$PORT</span>
+</code></pre></div>
 
 <p>Then set up Git:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>git init .
 <span class="lineno">2</span> <span class="nv">$ </span>git add .
-<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Initial commit</code></pre></div>
+<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Initial commit
+</code></pre></div>
 
 <p>Create a new Heroku app and push your application to Heroku:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku create
-<span class="lineno">2</span> <span class="nv">$ </span>git push heroku master</code></pre></div>
+<span class="lineno">2</span> <span class="nv">$ </span>git push heroku master
+</code></pre></div>
 
 <p>Then launch your new privately hosted gem server in the browser:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku open</code></pre></div>
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku open
+</code></pre></div>
 
 <p>And just like that you have your very own private gem server. Now let’s push a
 gem to the server.</p>
@@ -530,7 +567,8 @@ end up pushing our local Bundler settings to heroku:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;.bundle&quot;</span> &gt;&gt; .gitignore
 <span class="lineno">2</span> <span class="nv">$ </span>git add .gitignore
-<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Ignoring the .bundle path</code></pre></div>
+<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Ignoring the .bundle path
+</code></pre></div>
 
 <p>Next you’ll need a <code>vendor/cache</code> folder. This is where you’ll place your
 private <code>.gem</code> files. So go ahead and create that folder now, and copy your
@@ -538,7 +576,8 @@ gem file into it.</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>mkdir vendor
 <span class="lineno">2</span> <span class="nv">$ </span>mkdir vendor/cache
-<span class="lineno">3</span> <span class="nv">$ </span>cp my.gem vendor/cache <span class="c"># replace &#39;my.gem&#39; with your actual gem file</span></code></pre></div>
+<span class="lineno">3</span> <span class="nv">$ </span>cp my.gem vendor/cache <span class="c"># replace &#39;my.gem&#39; with your actual gem file</span>
+</code></pre></div>
 
 <p>This is where things can get a little tricky. In order for us to push our gem
 to Heroku, we need to first run <code>bundle install</code>. However since our gem is
@@ -549,7 +588,8 @@ you’ll need to run <code>bundle package --all</code> to vendor your gem’s de
 along with the gem:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>bundle install --no-cache
-<span class="lineno">2</span> <span class="nv">$ </span>bundle package --all</code></pre></div>
+<span class="lineno">2</span> <span class="nv">$ </span>bundle package --all
+</code></pre></div>
 
 <p>Using <code>bundle --no-cache</code> tells Bundler that the <code>.gem</code> files have already been
 copied into the <code>vendor/cache</code> folder, and it will install those instead of
@@ -569,7 +609,8 @@ completing the installation.</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>git add .
 <span class="lineno">2</span> <span class="nv">$ </span>git commit -m Installed my private gem
-<span class="lineno">3</span> <span class="nv">$ </span>git push heroku master</code></pre></div>
+<span class="lineno">3</span> <span class="nv">$ </span>git push heroku master
+</code></pre></div>
 
 <p>Refresh your browser, and you’ll notice that your gem will now be listed.</p>
 
@@ -581,10 +622,13 @@ example:</p>
 <span class="lineno">2</span> <span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
 <span class="lineno">3</span> <span class="n">source</span> <span class="s1">&#39;http://private-gem-server.herokuapp.com&#39;</span>
 <span class="lineno">4</span> 
-<span class="lineno">5</span> <span class="n">gem</span> <span class="s1">&#39;my_private_app&#39;</span></code></pre></div>
+<span class="lineno">5</span> <span class="n">gem</span> <span class="s1">&#39;my_private_app&#39;</span>
+</code></pre></div>
 
 
     </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Get Your Own Free Private Gem Server&url=http://hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
   <section class="post">
@@ -610,12 +654,15 @@ having to have a partition dedicated to it:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/swap <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span>2048
 <span class="lineno">2</span> sudo mkswap /swap
-<span class="lineno">3</span> sudo swapon /swap</code></pre></div>
+<span class="lineno">3</span> sudo swapon /swap
+</code></pre></div>
 
 <p>And that’s it! Just change the <code>2048</code> in <code>count=2048</code> to however many kilobytes
 you’d like the swap file to be.</p>
 
     </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=How to Create A Swap File without a Partition&url=http://hi5dev.com/code/2013/11/25/temporary-linux-swap/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/code/2013/11/25/temporary-linux-swap/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/code/2013/11/25/temporary-linux-swap/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
   <section class="post">
@@ -661,7 +708,8 @@ for <code>:format</code> and has a unique index for <code>:slug</code>:</p>
 <span class="lineno">13</span> 
 <span class="lineno">14</span>     <span class="n">add_index</span> <span class="ss">:contents</span><span class="p">,</span> <span class="ss">:slug</span><span class="p">,</span> <span class="ss">unique</span><span class="p">:</span> <span class="kp">true</span>
 <span class="lineno">15</span>   <span class="k">end</span>
-<span class="lineno">16</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">16</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>Now configure the <code>Content</code> model so it parameterizes the title into a slug,
 which is what we’ll be using for the URL to display the content. You’ll also
@@ -686,7 +734,8 @@ need to set up the accessible fields, and validations:</p>
 <span class="lineno">17</span>   <span class="k">def</span> <span class="nf">to_param</span>
 <span class="lineno">18</span>     <span class="nb">self</span><span class="o">.</span><span class="n">slug</span>
 <span class="lineno">19</span>   <span class="k">end</span>
-<span class="lineno">20</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">20</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>Next create a controller that will render the requested <code>Content</code>:</p>
 
@@ -706,7 +755,8 @@ need to set up the accessible fields, and validations:</p>
 <span class="lineno">14</span>     <span class="c1"># Render the content inline</span>
 <span class="lineno">15</span>     <span class="n">render</span> <span class="ss">inline</span><span class="p">:</span> <span class="vi">@content</span><span class="o">.</span><span class="n">body</span>
 <span class="lineno">16</span>   <span class="k">end</span>
-<span class="lineno">17</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">17</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>Configure your app’s routes:</p>
 
@@ -715,11 +765,13 @@ need to set up the accessible fields, and validations:</p>
 <span class="lineno">3</span> <span class="no">MyApp</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
 <span class="lineno">4</span>   <span class="n">root</span> <span class="ss">to</span><span class="p">:</span> <span class="s2">&quot;contents#show&quot;</span>
 <span class="lineno">5</span>   <span class="n">get</span> <span class="s2">&quot;contents/*id&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;contents#show&quot;</span>
-<span class="lineno">6</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">6</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>Fire up the <code>rails console</code> and create some default content:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="no">Content</span><span class="o">.</span><span class="n">create!</span> <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="ss">title</span><span class="p">:</span> <span class="s1">&#39;Home Page&#39;</span><span class="p">,</span> <span class="ss">body</span><span class="p">:</span> <span class="s1">&#39;&lt;h1&gt;&lt;%= @content.title %&gt;&lt;/h1&gt;&#39;</span></code></pre></div>
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="no">Content</span><span class="o">.</span><span class="n">create!</span> <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="ss">title</span><span class="p">:</span> <span class="s1">&#39;Home Page&#39;</span><span class="p">,</span> <span class="ss">body</span><span class="p">:</span> <span class="s1">&#39;&lt;h1&gt;&lt;%= @content.title %&gt;&lt;/h1&gt;&#39;</span>
+</code></pre></div>
 
 <p>Now when you visit your app in the browser you’ll be presented with content that
 was pulled from the database and rendered by your application.</p>
@@ -739,6 +791,8 @@ browser. I left that out of the above example for the sake of brevity, since
 it is very basic Rails code.</p>
 
     </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=A Simple Rails CMS&url=http://hi5dev.com/2013/01/09/simple-rails-cms/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/2013/01/09/simple-rails-cms/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/2013/01/09/simple-rails-cms/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
 

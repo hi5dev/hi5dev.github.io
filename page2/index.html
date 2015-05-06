@@ -9,7 +9,7 @@
   <link rel="canonical" href="http://hi5dev.com/page2/">
 
   <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
-  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+  <link rel="stylesheet" href="/assets/site-d3245521525be3916d3889e980280e76.css">
 
   <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
   <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
@@ -67,7 +67,8 @@
 
       <div class="content pure-u-3-4">
         <div class="main">
-          <div id="search">
+          
+            <div id="search">
   <form action="/search" method="get" class="pure-form">
     <input type="text"
            id="search-query"
@@ -80,12 +81,13 @@
 </div>
 
 
-          <section id="search-results" style="display: none;">
-            <table class="entries">
-            </table>
-          </section>
+            <section id="search-results" style="display: none;">
+              <table class="entries">
+              </table>
+            </section>
 
-          <hr/>
+            <hr/>
+          
 
           
   <section class="post">
@@ -117,7 +119,8 @@ descend from <code>ActiveRecord::Session::Store</code>, you can access your app�
 from anywhere in your application:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: app/models/session.rb</span>
-<span class="lineno">2</span> <span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Store</span><span class="p">;</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">2</span> <span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Store</span><span class="p">;</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>The <code>Session</code> object will behave like any other <code>ActiveRecord</code> model, with the
 exception of the <code>#data</code> method, which will return a <code>Hash</code> object.</p>
@@ -129,7 +132,8 @@ site’s current visitors:</p>
 <span class="lineno">2</span>   <span class="n">session</span><span class="o">.</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Flash</span><span class="o">::</span><span class="no">FlashHash</span><span class="o">.</span><span class="n">new</span>
 <span class="lineno">3</span>   <span class="n">session</span><span class="o">.</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="ss">:alert</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;Server going down in 10 minutes for scheduled maintenance.&#39;</span>
 <span class="lineno">4</span>   <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
-<span class="lineno">5</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">5</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>You could even use it to display random site promotions. For example, using the
 <a href="https://github.com/adamwiggins/clockwork">clockwork</a> gem, you could do this:</p>
@@ -147,18 +151,22 @@ site’s current visitors:</p>
 <span class="lineno">11</span>     <span class="n">session</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="ss">:promo</span><span class="o">]</span> <span class="o">=</span> <span class="n">promo</span><span class="o">.</span><span class="n">call_to_action</span>
 <span class="lineno">12</span>     <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
 <span class="lineno">13</span>   <span class="k">end</span>
-<span class="lineno">14</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">14</span> <span class="k">end</span>
+</code></pre></div>
 
 <div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: app/views/application.html.erb</span>
 <span class="lineno">2</span> <span class="o">&lt;</span><span class="sx">% if </span><span class="n">flash</span><span class="o">[</span><span class="ss">:promo</span><span class="o">].</span><span class="n">present?</span> <span class="sx">%&gt;</span>
 <span class="lineno">3</span> <span class="sx">  &lt;div id=&quot;promo&quot;&gt;</span><span class="o">&lt;%=</span> <span class="n">raw</span> <span class="n">flash</span><span class="o">[</span><span class="ss">:promo</span><span class="o">]</span> <span class="sx">%&gt;&lt;/div&gt;</span>
-<span class="lineno">4</span> <span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span></code></pre></div>
+<span class="lineno">4</span> <span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+</code></pre></div>
 
 <p>Now the next time your site’s current visitors visit a new page they’ll be
 presented with the promotion, while any new visitors won’t see any promos until
 they’ve been browsing your site for at least 1 minute.</p>
 
     </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=ActiveRecord::Session::Store&url=http://hi5dev.com/2013/01/01/active-record-session-store/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/2013/01/01/active-record-session-store/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/2013/01/01/active-record-session-store/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
   <section class="post">
@@ -190,7 +198,8 @@ search on multiple rails route files to find out how to configure my application
 for this, I found this simple one line solution that you can add to your
 <code>config/application.rb</code> file in a Rails 3.2 or higher application:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="n">config</span><span class="o">.</span><span class="n">paths</span><span class="o">[</span><span class="s2">&quot;config/routes&quot;</span><span class="o">]</span> <span class="o">+=</span> <span class="no">Dir</span><span class="o">[</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;routes&quot;</span><span class="p">,</span> <span class="s2">&quot;*.rb&quot;</span><span class="p">)</span><span class="o">]</span></code></pre></div>
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="n">config</span><span class="o">.</span><span class="n">paths</span><span class="o">[</span><span class="s2">&quot;config/routes&quot;</span><span class="o">]</span> <span class="o">+=</span> <span class="no">Dir</span><span class="o">[</span><span class="no">Rails</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;routes&quot;</span><span class="p">,</span> <span class="s2">&quot;*.rb&quot;</span><span class="p">)</span><span class="o">]</span>
+</code></pre></div>
 
 <p>What that does is tell your application to use any file located in
 <code>config/routes</code> as a routing file.</p>
@@ -217,7 +226,8 @@ is in the form of a very simple routing extension that looks like this:</p>
 <span class="lineno"> 7</span>       <span class="nb">eval</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
 <span class="lineno"> 8</span>     <span class="k">end</span>
 <span class="lineno"> 9</span>   <span class="k">end</span>
-<span class="lineno">10</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">10</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>Now I can specify the exact order the external route files should be loaded in,
 when the routes should be loaded, and even use them more than once. For example,
@@ -235,19 +245,24 @@ right now:</p>
 <span class="lineno"> 9</span>   <span class="k">end</span>
 <span class="lineno">10</span> 
 <span class="lineno">11</span>   <span class="n">draw</span> <span class="ss">:public</span>
-<span class="lineno">12</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">12</span> <span class="k">end</span>
+</code></pre></div>
 
 <div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: config/routes/authenticated.rb</span>
 <span class="lineno">2</span> <span class="n">resource</span> <span class="ss">:dashboard</span><span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:show</span><span class="o">]</span>
 <span class="lineno">3</span> <span class="n">resource</span> <span class="ss">:preferences</span><span class="p">,</span> <span class="ss">:only</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:edit</span><span class="p">,</span> <span class="ss">:update</span><span class="o">]</span>
-<span class="lineno">4</span> <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">&quot;dashboards#show&quot;</span></code></pre></div>
+<span class="lineno">4</span> <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">&quot;dashboards#show&quot;</span>
+</code></pre></div>
 
 <div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: config/routes/public.rb</span>
 <span class="lineno">2</span> <span class="n">get</span> <span class="s2">&quot;/about&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;about#show&quot;</span>
-<span class="lineno">3</span> <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">&quot;about#show&quot;</span></code></pre></div>
+<span class="lineno">3</span> <span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">&quot;about#show&quot;</span>
+</code></pre></div>
 
 
     </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Multiple Route Files in Rails&url=http://hi5dev.com/code/2012/12/17/multiple-route-files-in-rails/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/code/2012/12/17/multiple-route-files-in-rails/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/code/2012/12/17/multiple-route-files-in-rails/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
   <section class="post">
@@ -283,6 +298,8 @@ doesn’t use iframes and script tags. All it does is provide you with a place t
 send your form data to. That’s it.</p>
 
     </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=SimpleForm&url=http://hi5dev.com/code/2012/12/12/simple-form/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/code/2012/12/12/simple-form/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/code/2012/12/12/simple-form/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
   <section class="post">
@@ -319,6 +336,8 @@ transition. The Twitter Bootstrap responsive theme relies on JavaScript, which
 makes it really slow, at least on my computer, when resizing the window.</p>
 
     </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Foundation 3&url=http://hi5dev.com/code/2012/12/11/foundation-3/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/code/2012/12/11/foundation-3/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/code/2012/12/11/foundation-3/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
   <section class="post">
@@ -350,6 +369,8 @@ the website. All I have to do is push the source code into another repository
 after I push it to where it’s published live.</p>
 
     </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Jekyll&url=http://hi5dev.com/code/2012/12/05/jekyll/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/code/2012/12/05/jekyll/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/code/2012/12/05/jekyll/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
 

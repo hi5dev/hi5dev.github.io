@@ -9,7 +9,7 @@
   <link rel="canonical" href="http://hi5dev.com/2013/01/09/simple-rails-cms/">
 
   <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
-  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+  <link rel="stylesheet" href="/assets/site-d3245521525be3916d3889e980280e76.css">
 
   <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
   <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
@@ -67,7 +67,8 @@
 
       <div class="content pure-u-3-4">
         <div class="main">
-          <div id="search">
+          
+            <div id="search">
   <form action="/search" method="get" class="pure-form">
     <input type="text"
            id="search-query"
@@ -80,33 +81,30 @@
 </div>
 
 
-          <section id="search-results" style="display: none;">
-            <table class="entries">
-            </table>
-          </section>
+            <section id="search-results" style="display: none;">
+              <table class="entries">
+              </table>
+            </section>
 
-          <hr/>
+            <hr/>
+          
 
-          <section class="post" itemscope itemtype="http://schema.org/Article">
+          <section class="post">
   <header class="post-header">
     <h2 class="post-title">
-      <a href="/2013/01/09/simple-rails-cms/" itemprop="url">
-        <span itemprop="name">
-          A Simple Rails CMS
-        </span>
+      <a href="/2013/01/09/simple-rails-cms/">
+        A Simple Rails CMS
       </a>
     </h2>
     <p class="post-meta">
-      <span itemprop="datePublished">
-        Jan 9, 2013
-      </span>
+      Jan 9, 2013
 
       
 
       
     </p>
   </header>
-  <div class="post-description" itemprop="articleBody">
+  <div class="post-description">
     <p>If you’re building a website, you’re no doubt going to want to add some dynamic
 content to it. In Ruby on Rails, this is a surprisingly easy task and can be
 set up in just a few minutes. No gems required.</p>
@@ -134,7 +132,8 @@ for <code>:format</code> and has a unique index for <code>:slug</code>:</p>
 <span class="lineno">13</span> 
 <span class="lineno">14</span>     <span class="n">add_index</span> <span class="ss">:contents</span><span class="p">,</span> <span class="ss">:slug</span><span class="p">,</span> <span class="ss">unique</span><span class="p">:</span> <span class="kp">true</span>
 <span class="lineno">15</span>   <span class="k">end</span>
-<span class="lineno">16</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">16</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>Now configure the <code>Content</code> model so it parameterizes the title into a slug,
 which is what we’ll be using for the URL to display the content. You’ll also
@@ -159,7 +158,8 @@ need to set up the accessible fields, and validations:</p>
 <span class="lineno">17</span>   <span class="k">def</span> <span class="nf">to_param</span>
 <span class="lineno">18</span>     <span class="nb">self</span><span class="o">.</span><span class="n">slug</span>
 <span class="lineno">19</span>   <span class="k">end</span>
-<span class="lineno">20</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">20</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>Next create a controller that will render the requested <code>Content</code>:</p>
 
@@ -179,7 +179,8 @@ need to set up the accessible fields, and validations:</p>
 <span class="lineno">14</span>     <span class="c1"># Render the content inline</span>
 <span class="lineno">15</span>     <span class="n">render</span> <span class="ss">inline</span><span class="p">:</span> <span class="vi">@content</span><span class="o">.</span><span class="n">body</span>
 <span class="lineno">16</span>   <span class="k">end</span>
-<span class="lineno">17</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">17</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>Configure your app’s routes:</p>
 
@@ -188,11 +189,13 @@ need to set up the accessible fields, and validations:</p>
 <span class="lineno">3</span> <span class="no">MyApp</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
 <span class="lineno">4</span>   <span class="n">root</span> <span class="ss">to</span><span class="p">:</span> <span class="s2">&quot;contents#show&quot;</span>
 <span class="lineno">5</span>   <span class="n">get</span> <span class="s2">&quot;contents/*id&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;contents#show&quot;</span>
-<span class="lineno">6</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">6</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>Fire up the <code>rails console</code> and create some default content:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="no">Content</span><span class="o">.</span><span class="n">create!</span> <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="ss">title</span><span class="p">:</span> <span class="s1">&#39;Home Page&#39;</span><span class="p">,</span> <span class="ss">body</span><span class="p">:</span> <span class="s1">&#39;&lt;h1&gt;&lt;%= @content.title %&gt;&lt;/h1&gt;&#39;</span></code></pre></div>
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="no">Content</span><span class="o">.</span><span class="n">create!</span> <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="ss">title</span><span class="p">:</span> <span class="s1">&#39;Home Page&#39;</span><span class="p">,</span> <span class="ss">body</span><span class="p">:</span> <span class="s1">&#39;&lt;h1&gt;&lt;%= @content.title %&gt;&lt;/h1&gt;&#39;</span>
+</code></pre></div>
 
 <p>Now when you visit your app in the browser you’ll be presented with content that
 was pulled from the database and rendered by your application.</p>
@@ -212,6 +215,8 @@ browser. I left that out of the above example for the sake of brevity, since
 it is very basic Rails code.</p>
 
   </div>
+
+  <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=A Simple Rails CMS&url=http://hi5dev.com/2013/01/09/simple-rails-cms/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/2013/01/09/simple-rails-cms/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/2013/01/09/simple-rails-cms/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
 </section>
 
 

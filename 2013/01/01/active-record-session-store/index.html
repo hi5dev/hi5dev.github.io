@@ -9,7 +9,7 @@
   <link rel="canonical" href="http://hi5dev.com/2013/01/01/active-record-session-store/">
 
   <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
-  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+  <link rel="stylesheet" href="/assets/site-d3245521525be3916d3889e980280e76.css">
 
   <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
   <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
@@ -67,7 +67,8 @@
 
       <div class="content pure-u-3-4">
         <div class="main">
-          <div id="search">
+          
+            <div id="search">
   <form action="/search" method="get" class="pure-form">
     <input type="text"
            id="search-query"
@@ -80,33 +81,30 @@
 </div>
 
 
-          <section id="search-results" style="display: none;">
-            <table class="entries">
-            </table>
-          </section>
+            <section id="search-results" style="display: none;">
+              <table class="entries">
+              </table>
+            </section>
 
-          <hr/>
+            <hr/>
+          
 
-          <section class="post" itemscope itemtype="http://schema.org/Article">
+          <section class="post">
   <header class="post-header">
     <h2 class="post-title">
-      <a href="/2013/01/01/active-record-session-store/" itemprop="url">
-        <span itemprop="name">
-          ActiveRecord::Session::Store
-        </span>
+      <a href="/2013/01/01/active-record-session-store/">
+        ActiveRecord::Session::Store
       </a>
     </h2>
     <p class="post-meta">
-      <span itemprop="datePublished">
-        Jan 1, 2013
-      </span>
+      Jan 1, 2013
 
       
 
       
     </p>
   </header>
-  <div class="post-description" itemprop="articleBody">
+  <div class="post-description">
     <p>Recently I ran into a cookie overflow issue when using the
 <a href="https://github.com/mperham/sidekiq">Sidekiq</a> gem for background processing. To
 solve the issue, I had to abandon using cookies for session storage, and instead
@@ -120,7 +118,8 @@ descend from <code>ActiveRecord::Session::Store</code>, you can access your app�
 from anywhere in your application:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: app/models/session.rb</span>
-<span class="lineno">2</span> <span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Store</span><span class="p">;</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">2</span> <span class="k">class</span> <span class="nc">Session</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Store</span><span class="p">;</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>The <code>Session</code> object will behave like any other <code>ActiveRecord</code> model, with the
 exception of the <code>#data</code> method, which will return a <code>Hash</code> object.</p>
@@ -132,7 +131,8 @@ site’s current visitors:</p>
 <span class="lineno">2</span>   <span class="n">session</span><span class="o">.</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">]</span> <span class="o">||=</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Flash</span><span class="o">::</span><span class="no">FlashHash</span><span class="o">.</span><span class="n">new</span>
 <span class="lineno">3</span>   <span class="n">session</span><span class="o">.</span><span class="n">data</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="ss">:alert</span><span class="o">]</span> <span class="o">=</span> <span class="s1">&#39;Server going down in 10 minutes for scheduled maintenance.&#39;</span>
 <span class="lineno">4</span>   <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
-<span class="lineno">5</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">5</span> <span class="k">end</span>
+</code></pre></div>
 
 <p>You could even use it to display random site promotions. For example, using the
 <a href="https://github.com/adamwiggins/clockwork">clockwork</a> gem, you could do this:</p>
@@ -150,18 +150,22 @@ site’s current visitors:</p>
 <span class="lineno">11</span>     <span class="n">session</span><span class="o">[</span><span class="s1">&#39;flash&#39;</span><span class="o">][</span><span class="ss">:promo</span><span class="o">]</span> <span class="o">=</span> <span class="n">promo</span><span class="o">.</span><span class="n">call_to_action</span>
 <span class="lineno">12</span>     <span class="n">session</span><span class="o">.</span><span class="n">save!</span>
 <span class="lineno">13</span>   <span class="k">end</span>
-<span class="lineno">14</span> <span class="k">end</span></code></pre></div>
+<span class="lineno">14</span> <span class="k">end</span>
+</code></pre></div>
 
 <div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: app/views/application.html.erb</span>
 <span class="lineno">2</span> <span class="o">&lt;</span><span class="sx">% if </span><span class="n">flash</span><span class="o">[</span><span class="ss">:promo</span><span class="o">].</span><span class="n">present?</span> <span class="sx">%&gt;</span>
 <span class="lineno">3</span> <span class="sx">  &lt;div id=&quot;promo&quot;&gt;</span><span class="o">&lt;%=</span> <span class="n">raw</span> <span class="n">flash</span><span class="o">[</span><span class="ss">:promo</span><span class="o">]</span> <span class="sx">%&gt;&lt;/div&gt;</span>
-<span class="lineno">4</span> <span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span></code></pre></div>
+<span class="lineno">4</span> <span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+</code></pre></div>
 
 <p>Now the next time your site’s current visitors visit a new page they’ll be
 presented with the promotion, while any new visitors won’t see any promos until
 they’ve been browsing your site for at least 1 minute.</p>
 
   </div>
+
+  <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=ActiveRecord::Session::Store&url=http://hi5dev.com/2013/01/01/active-record-session-store/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/2013/01/01/active-record-session-store/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/2013/01/01/active-record-session-store/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
 </section>
 
 

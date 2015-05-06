@@ -9,7 +9,7 @@
   <link rel="canonical" href="http://hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/">
 
   <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
-  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+  <link rel="stylesheet" href="/assets/site-d3245521525be3916d3889e980280e76.css">
 
   <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
   <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
@@ -67,7 +67,8 @@
 
       <div class="content pure-u-3-4">
         <div class="main">
-          <div id="search">
+          
+            <div id="search">
   <form action="/search" method="get" class="pure-form">
     <input type="text"
            id="search-query"
@@ -80,33 +81,30 @@
 </div>
 
 
-          <section id="search-results" style="display: none;">
-            <table class="entries">
-            </table>
-          </section>
+            <section id="search-results" style="display: none;">
+              <table class="entries">
+              </table>
+            </section>
 
-          <hr/>
+            <hr/>
+          
 
-          <section class="post" itemscope itemtype="http://schema.org/Article">
+          <section class="post">
   <header class="post-header">
     <h2 class="post-title">
-      <a href="/jekyll/2014/06/13/using-foreman-with-jekyll/" itemprop="url">
-        <span itemprop="name">
-          Using Foreman with Jekyll
-        </span>
+      <a href="/jekyll/2014/06/13/using-foreman-with-jekyll/">
+        Using Foreman with Jekyll
       </a>
     </h2>
     <p class="post-meta">
-      <span itemprop="datePublished">
-        Jun 13, 2014
-      </span>
+      Jun 13, 2014
 
       
 
       
     </p>
   </header>
-  <div class="post-description" itemprop="articleBody">
+  <div class="post-description">
     <p>When building a website with Jekyll, you might want the site to automatically
 rebuild when you make a change. You can do that with the <code>jekyll build --watch</code>
 command. Then of course you’ll want to serve the website so you can preview it
@@ -128,7 +126,8 @@ how to get it up and running with Jekyll.</p>
 
 <p>First, install the gem:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>gem install foreman</code></pre></div>
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>gem install foreman
+</code></pre></div>
 
 <p>Then, create a new file called <code>Procfile</code> in the root of your Jekyll project
 folder, and add the tasks you want running in parallel. Using the three tasks
@@ -136,16 +135,20 @@ mentioned above as an example, your <code>Procfile</code> might look something l
 
 <div class="highlight"><pre><code class="yaml"><span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">jekyll build --watch</span>
 <span class="l-Scalar-Plain">server</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">jekyll serve</span>
-<span class="l-Scalar-Plain">compass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">compass watch</span></code></pre></div>
+<span class="l-Scalar-Plain">compass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">compass watch</span>
+</code></pre></div>
 
 <p>To start all the processes in parallel, just run:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>foreman start</code></pre></div>
+<div class="highlight"><pre><code class="bash"><span class="nv">$ </span>foreman start
+</code></pre></div>
 
 <p>Now you can manage and monitor all the processes in just one tab. Pressing
 CTRL+C will automatically send the KILL signal to every task for you.</p>
 
   </div>
+
+  <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Using Foreman with Jekyll&url=http://hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
 </section>
 
 

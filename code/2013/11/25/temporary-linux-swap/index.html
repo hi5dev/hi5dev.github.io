@@ -9,7 +9,7 @@
   <link rel="canonical" href="http://hi5dev.com/code/2013/11/25/temporary-linux-swap/">
 
   <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
-  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+  <link rel="stylesheet" href="/assets/site-d3245521525be3916d3889e980280e76.css">
 
   <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
   <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
@@ -67,7 +67,8 @@
 
       <div class="content pure-u-3-4">
         <div class="main">
-          <div id="search">
+          
+            <div id="search">
   <form action="/search" method="get" class="pure-form">
     <input type="text"
            id="search-query"
@@ -80,33 +81,30 @@
 </div>
 
 
-          <section id="search-results" style="display: none;">
-            <table class="entries">
-            </table>
-          </section>
+            <section id="search-results" style="display: none;">
+              <table class="entries">
+              </table>
+            </section>
 
-          <hr/>
+            <hr/>
+          
 
-          <section class="post" itemscope itemtype="http://schema.org/Article">
+          <section class="post">
   <header class="post-header">
     <h2 class="post-title">
-      <a href="/code/2013/11/25/temporary-linux-swap/" itemprop="url">
-        <span itemprop="name">
-          How to Create A Swap File without a Partition
-        </span>
+      <a href="/code/2013/11/25/temporary-linux-swap/">
+        How to Create A Swap File without a Partition
       </a>
     </h2>
     <p class="post-meta">
-      <span itemprop="datePublished">
-        Nov 25, 2013
-      </span>
+      Nov 25, 2013
 
       
 
       
     </p>
   </header>
-  <div class="post-description" itemprop="articleBody">
+  <div class="post-description">
     <p>So this will be a very short article, but it is something I find very useful
 from time-to-time, especially when compiling code on a cheap cloud server with
 very limited resources. Here’s how to enable a temporary swap file without
@@ -114,12 +112,15 @@ having to have a partition dedicated to it:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/swap <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span>2048
 <span class="lineno">2</span> sudo mkswap /swap
-<span class="lineno">3</span> sudo swapon /swap</code></pre></div>
+<span class="lineno">3</span> sudo swapon /swap
+</code></pre></div>
 
 <p>And that’s it! Just change the <code>2048</code> in <code>count=2048</code> to however many kilobytes
 you’d like the swap file to be.</p>
 
   </div>
+
+  <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=How to Create A Swap File without a Partition&url=http://hi5dev.com/code/2013/11/25/temporary-linux-swap/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/code/2013/11/25/temporary-linux-swap/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/code/2013/11/25/temporary-linux-swap/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
 </section>
 
 

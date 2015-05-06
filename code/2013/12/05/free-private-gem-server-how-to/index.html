@@ -9,7 +9,7 @@
   <link rel="canonical" href="http://hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/">
 
   <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
-  <link rel="stylesheet" href="/assets/site-c167ffd8cd2232cd1a637b6beb0c5ecc.css">
+  <link rel="stylesheet" href="/assets/site-d3245521525be3916d3889e980280e76.css">
 
   <script src="/assets/search.min-95ed024b7cc7d927ce9285fe29ad3da8.js"></script>
   <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
@@ -67,7 +67,8 @@
 
       <div class="content pure-u-3-4">
         <div class="main">
-          <div id="search">
+          
+            <div id="search">
   <form action="/search" method="get" class="pure-form">
     <input type="text"
            id="search-query"
@@ -80,33 +81,30 @@
 </div>
 
 
-          <section id="search-results" style="display: none;">
-            <table class="entries">
-            </table>
-          </section>
+            <section id="search-results" style="display: none;">
+              <table class="entries">
+              </table>
+            </section>
 
-          <hr/>
+            <hr/>
+          
 
-          <section class="post" itemscope itemtype="http://schema.org/Article">
+          <section class="post">
   <header class="post-header">
     <h2 class="post-title">
-      <a href="/code/2013/12/05/free-private-gem-server-how-to/" itemprop="url">
-        <span itemprop="name">
-          Get Your Own Free Private Gem Server
-        </span>
+      <a href="/code/2013/12/05/free-private-gem-server-how-to/">
+        Get Your Own Free Private Gem Server
       </a>
     </h2>
     <p class="post-meta">
-      <span itemprop="datePublished">
-        Dec 5, 2013
-      </span>
+      Dec 5, 2013
 
       
 
       
     </p>
   </header>
-  <div class="post-description" itemprop="articleBody">
+  <div class="post-description">
     <p>Using Heroku you can privately host your gems in just a couple of minutes.
 Here’s how.</p>
 
@@ -115,29 +113,34 @@ source and ruby version:</p>
 
 <div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: Gemfile</span>
 <span class="lineno">2</span> <span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
-<span class="lineno">3</span> <span class="n">ruby</span> <span class="s1">&#39;2.0.0&#39;</span></code></pre></div>
+<span class="lineno">3</span> <span class="n">ruby</span> <span class="s1">&#39;2.0.0&#39;</span>
+</code></pre></div>
 
 <p>Then run <code>bundle</code> to generate <code>Gemfile.lock</code>.</p>
 
 <p>Next, create a Procfile with the following content:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="c"># File: Procfile</span>
-<span class="lineno">2</span> web: gem server -p <span class="nv">$PORT</span></code></pre></div>
+<span class="lineno">2</span> web: gem server -p <span class="nv">$PORT</span>
+</code></pre></div>
 
 <p>Then set up Git:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>git init .
 <span class="lineno">2</span> <span class="nv">$ </span>git add .
-<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Initial commit</code></pre></div>
+<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Initial commit
+</code></pre></div>
 
 <p>Create a new Heroku app and push your application to Heroku:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku create
-<span class="lineno">2</span> <span class="nv">$ </span>git push heroku master</code></pre></div>
+<span class="lineno">2</span> <span class="nv">$ </span>git push heroku master
+</code></pre></div>
 
 <p>Then launch your new privately hosted gem server in the browser:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku open</code></pre></div>
+<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku open
+</code></pre></div>
 
 <p>And just like that you have your very own private gem server. Now let’s push a
 gem to the server.</p>
@@ -147,7 +150,8 @@ end up pushing our local Bundler settings to heroku:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;.bundle&quot;</span> &gt;&gt; .gitignore
 <span class="lineno">2</span> <span class="nv">$ </span>git add .gitignore
-<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Ignoring the .bundle path</code></pre></div>
+<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Ignoring the .bundle path
+</code></pre></div>
 
 <p>Next you’ll need a <code>vendor/cache</code> folder. This is where you’ll place your
 private <code>.gem</code> files. So go ahead and create that folder now, and copy your
@@ -155,7 +159,8 @@ gem file into it.</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>mkdir vendor
 <span class="lineno">2</span> <span class="nv">$ </span>mkdir vendor/cache
-<span class="lineno">3</span> <span class="nv">$ </span>cp my.gem vendor/cache <span class="c"># replace &#39;my.gem&#39; with your actual gem file</span></code></pre></div>
+<span class="lineno">3</span> <span class="nv">$ </span>cp my.gem vendor/cache <span class="c"># replace &#39;my.gem&#39; with your actual gem file</span>
+</code></pre></div>
 
 <p>This is where things can get a little tricky. In order for us to push our gem
 to Heroku, we need to first run <code>bundle install</code>. However since our gem is
@@ -166,7 +171,8 @@ you’ll need to run <code>bundle package --all</code> to vendor your gem’s de
 along with the gem:</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>bundle install --no-cache
-<span class="lineno">2</span> <span class="nv">$ </span>bundle package --all</code></pre></div>
+<span class="lineno">2</span> <span class="nv">$ </span>bundle package --all
+</code></pre></div>
 
 <p>Using <code>bundle --no-cache</code> tells Bundler that the <code>.gem</code> files have already been
 copied into the <code>vendor/cache</code> folder, and it will install those instead of
@@ -186,7 +192,8 @@ completing the installation.</p>
 
 <div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>git add .
 <span class="lineno">2</span> <span class="nv">$ </span>git commit -m Installed my private gem
-<span class="lineno">3</span> <span class="nv">$ </span>git push heroku master</code></pre></div>
+<span class="lineno">3</span> <span class="nv">$ </span>git push heroku master
+</code></pre></div>
 
 <p>Refresh your browser, and you’ll notice that your gem will now be listed.</p>
 
@@ -198,10 +205,13 @@ example:</p>
 <span class="lineno">2</span> <span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
 <span class="lineno">3</span> <span class="n">source</span> <span class="s1">&#39;http://private-gem-server.herokuapp.com&#39;</span>
 <span class="lineno">4</span> 
-<span class="lineno">5</span> <span class="n">gem</span> <span class="s1">&#39;my_private_app&#39;</span></code></pre></div>
+<span class="lineno">5</span> <span class="n">gem</span> <span class="s1">&#39;my_private_app&#39;</span>
+</code></pre></div>
 
 
   </div>
+
+  <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Get Your Own Free Private Gem Server&url=http://hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
 </section>
 
 
