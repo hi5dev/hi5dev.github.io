@@ -3,8 +3,8 @@
   <channel>
     <title>Hi5 Development</title>
     <description>Ruby Development</description>
-    <link>http://hi5dev.com/</link>
-    <atom:link href="http://hi5dev.com/feed.xml" rel="self" type="application/rss+xml" />
+    <link>http://www.hi5dev.com/</link>
+    <atom:link href="http://www.hi5dev.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
         <title>Flash Marketing with Rails</title>
@@ -342,8 +342,8 @@ you shut it down. To accomplish the same task via pulling data from the server
 would be considerably more complex, as you can imagine.&lt;/p&gt;
 </description>
         <pubDate>Mon, 16 Jun 2014 00:00:00 -0700</pubDate>
-        <link>http://hi5dev.com/rails/2014/06/16/flash_marketing_with_rails/</link>
-        <guid isPermaLink="true">http://hi5dev.com/rails/2014/06/16/flash_marketing_with_rails/</guid>
+        <link>http://www.hi5dev.com/rails/2014/06/16/flash_marketing_with_rails/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/rails/2014/06/16/flash_marketing_with_rails/</guid>
       </item>
     
       <item>
@@ -390,8 +390,8 @@ mentioned above as an example, your &lt;code&gt;Procfile&lt;/code&gt; might look
 CTRL+C will automatically send the KILL signal to every task for you.&lt;/p&gt;
 </description>
         <pubDate>Fri, 13 Jun 2014 11:05:36 -0700</pubDate>
-        <link>http://hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/</link>
-        <guid isPermaLink="true">http://hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/</guid>
+        <link>http://www.hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/jekyll/2014/06/13/using-foreman-with-jekyll/</guid>
       </item>
     
       <item>
@@ -501,8 +501,8 @@ example:&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 05 Dec 2013 00:00:00 -0800</pubDate>
-        <link>http://hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/</link>
-        <guid isPermaLink="true">http://hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/</guid>
+        <link>http://www.hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/</guid>
       </item>
     
       <item>
@@ -521,8 +521,8 @@ having to have a partition dedicated to it:&lt;/p&gt;
 you’d like the swap file to be.&lt;/p&gt;
 </description>
         <pubDate>Mon, 25 Nov 2013 00:00:00 -0800</pubDate>
-        <link>http://hi5dev.com/code/2013/11/25/temporary-linux-swap/</link>
-        <guid isPermaLink="true">http://hi5dev.com/code/2013/11/25/temporary-linux-swap/</guid>
+        <link>http://www.hi5dev.com/code/2013/11/25/temporary-linux-swap/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/code/2013/11/25/temporary-linux-swap/</guid>
       </item>
     
       <item>
@@ -637,8 +637,8 @@ browser. I left that out of the above example for the sake of brevity, since
 it is very basic Rails code.&lt;/p&gt;
 </description>
         <pubDate>Wed, 09 Jan 2013 00:00:00 -0800</pubDate>
-        <link>http://hi5dev.com/2013/01/09/simple-rails-cms/</link>
-        <guid isPermaLink="true">http://hi5dev.com/2013/01/09/simple-rails-cms/</guid>
+        <link>http://www.hi5dev.com/2013/01/09/simple-rails-cms/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/2013/01/09/simple-rails-cms/</guid>
       </item>
     
       <item>
@@ -702,8 +702,8 @@ presented with the promotion, while any new visitors won’t see any promos unti
 they’ve been browsing your site for at least 1 minute.&lt;/p&gt;
 </description>
         <pubDate>Tue, 01 Jan 2013 00:00:00 -0800</pubDate>
-        <link>http://hi5dev.com/2013/01/01/active-record-session-store/</link>
-        <guid isPermaLink="true">http://hi5dev.com/2013/01/01/active-record-session-store/</guid>
+        <link>http://www.hi5dev.com/2013/01/01/active-record-session-store/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/2013/01/01/active-record-session-store/</guid>
       </item>
     
       <item>
@@ -784,8 +784,8 @@ right now:&lt;/p&gt;
 
 </description>
         <pubDate>Mon, 17 Dec 2012 00:00:00 -0800</pubDate>
-        <link>http://hi5dev.com/code/2012/12/17/multiple-route-files-in-rails/</link>
-        <guid isPermaLink="true">http://hi5dev.com/code/2012/12/17/multiple-route-files-in-rails/</guid>
+        <link>http://www.hi5dev.com/code/2012/12/17/multiple-route-files-in-rails/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/code/2012/12/17/multiple-route-files-in-rails/</guid>
       </item>
     
       <item>
@@ -807,8 +807,8 @@ doesn’t use iframes and script tags. All it does is provide you with a place t
 send your form data to. That’s it.&lt;/p&gt;
 </description>
         <pubDate>Wed, 12 Dec 2012 00:00:00 -0800</pubDate>
-        <link>http://hi5dev.com/code/2012/12/12/simple-form/</link>
-        <guid isPermaLink="true">http://hi5dev.com/code/2012/12/12/simple-form/</guid>
+        <link>http://www.hi5dev.com/code/2012/12/12/simple-form/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/code/2012/12/12/simple-form/</guid>
       </item>
     
       <item>
@@ -831,8 +831,8 @@ transition. The Twitter Bootstrap responsive theme relies on JavaScript, which
 makes it really slow, at least on my computer, when resizing the window.&lt;/p&gt;
 </description>
         <pubDate>Tue, 11 Dec 2012 00:00:00 -0800</pubDate>
-        <link>http://hi5dev.com/code/2012/12/11/foundation-3/</link>
-        <guid isPermaLink="true">http://hi5dev.com/code/2012/12/11/foundation-3/</guid>
+        <link>http://www.hi5dev.com/code/2012/12/11/foundation-3/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/code/2012/12/11/foundation-3/</guid>
       </item>
     
       <item>
@@ -850,8 +850,8 @@ the website. All I have to do is push the source code into another repository
 after I push it to where it’s published live.&lt;/p&gt;
 </description>
         <pubDate>Wed, 05 Dec 2012 00:00:00 -0800</pubDate>
-        <link>http://hi5dev.com/code/2012/12/05/jekyll/</link>
-        <guid isPermaLink="true">http://hi5dev.com/code/2012/12/05/jekyll/</guid>
+        <link>http://www.hi5dev.com/code/2012/12/05/jekyll/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/code/2012/12/05/jekyll/</guid>
       </item>
     
   </channel>
