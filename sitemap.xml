@@ -3,6 +3,21 @@
   
     
     <url>
+      <loc>http://www.hi5dev.com/ruby/2016/01/05/web_framework_from_scratch_part_one/</loc>
+      
+        <lastmod>2016-01-05T00:00:00-08:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
       <loc>http://www.hi5dev.com/rails/2014/06/16/flash_marketing_with_rails/</loc>
       
         <lastmod>2014-06-16T00:00:00-07:00</lastmod>
@@ -154,9 +169,9 @@
   
     
     <url>
-      <loc>http://www.hi5dev.com/feed.xml</loc>
+      <loc>http://www.hi5dev.com/</loc>
       
-        <lastmod>2015-05-08T17:55:50-07:00</lastmod>
+        <lastmod>2016-01-05T15:07:31-08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -171,7 +186,7 @@
     <url>
       <loc>http://www.hi5dev.com/contact/</loc>
       
-        <lastmod>2015-05-08T17:55:50-07:00</lastmod>
+        <lastmod>2016-01-05T15:07:31-08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -186,7 +201,7 @@
     <url>
       <loc>http://www.hi5dev.com/search/</loc>
       
-        <lastmod>2015-05-08T17:55:50-07:00</lastmod>
+        <lastmod>2016-01-05T15:07:31-08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -201,7 +216,7 @@
     <url>
       <loc>http://www.hi5dev.com/sitemap.xml</loc>
       
-        <lastmod>2015-05-08T17:55:50-07:00</lastmod>
+        <lastmod>2016-01-05T15:07:31-08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -214,9 +229,9 @@
   
     
     <url>
-      <loc>http://www.hi5dev.com/</loc>
+      <loc>http://www.hi5dev.com/feed.xml</loc>
       
-        <lastmod>2015-05-08T17:55:50-07:00</lastmod>
+        <lastmod>2016-01-05T15:07:31-08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -231,7 +246,22 @@
     <url>
       <loc>http://www.hi5dev.com/page2/</loc>
       
-        <lastmod>2015-05-08T17:55:50-07:00</lastmod>
+        <lastmod>2016-01-05T15:07:31-08:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.hi5dev.com/page3/</loc>
+      
+        <lastmod>2016-01-05T15:07:31-08:00</lastmod>
       
       
         <changefreq>monthly</changefreq>

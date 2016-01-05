@@ -93,6 +93,136 @@
   <section class="post">
     <header class="post-header">
       <h2 class="post-title">
+        <a href="/2013/01/09/simple-rails-cms/">
+          A Simple Rails CMS
+        </a>
+      </h2>
+      <p class="post-meta">
+        Jan 9, 2013
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>If you’re building a website, you’re no doubt going to want to add some dynamic
+content to it. In Ruby on Rails, this is a surprisingly easy task and can be
+set up in just a few minutes. No gems required.</p>
+
+<p>To get started, first set up a <code>Contents</code> model:</p>
+
+<pre><code>rails g contents slug:string format:string title:string author:string body:text
+</code></pre>
+
+<p>Then modify the migration file that was created so it includes a default value
+for <code>:format</code> and has a unique index for <code>:slug</code>:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno"> 1</span> <span class="c1"># File: db/migrate/*_create_contents.rb</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="k">class</span> <span class="nc">CreateContents</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+<span class="lineno"> 4</span>   <span class="k">def</span> <span class="nf">change</span>
+<span class="lineno"> 5</span>     <span class="n">create_table</span> <span class="ss">:contents</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+<span class="lineno"> 6</span>       <span class="n">t</span><span class="o">.</span><span class="n">string</span>  <span class="ss">:slug</span>
+<span class="lineno"> 7</span>       <span class="n">t</span><span class="o">.</span><span class="n">string</span>  <span class="ss">:format</span><span class="p">,</span> <span class="ss">default</span><span class="p">:</span> <span class="s2">&quot;html&quot;</span>
+<span class="lineno"> 8</span>       <span class="n">t</span><span class="o">.</span><span class="n">string</span>  <span class="ss">:title</span>
+<span class="lineno"> 9</span>       <span class="n">t</span><span class="o">.</span><span class="n">string</span>  <span class="ss">:author</span>
+<span class="lineno">10</span>       <span class="n">t</span><span class="o">.</span><span class="n">text</span>    <span class="ss">:body</span>
+<span class="lineno">11</span>       <span class="n">t</span><span class="o">.</span><span class="n">timestamps</span>
+<span class="lineno">12</span>     <span class="k">end</span>
+<span class="lineno">13</span> 
+<span class="lineno">14</span>     <span class="n">add_index</span> <span class="ss">:contents</span><span class="p">,</span> <span class="ss">:slug</span><span class="p">,</span> <span class="ss">unique</span><span class="p">:</span> <span class="kp">true</span>
+<span class="lineno">15</span>   <span class="k">end</span>
+<span class="lineno">16</span> <span class="k">end</span>
+</code></pre></div>
+
+<p>Now configure the <code>Content</code> model so it parameterizes the title into a slug,
+which is what we’ll be using for the URL to display the content. You’ll also
+need to set up the accessible fields, and validations:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno"> 1</span> <span class="c1"># File: app/models/content.rb</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="k">class</span> <span class="nc">Content</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+<span class="lineno"> 4</span>   <span class="n">attr_accessible</span>               <span class="ss">:title</span><span class="p">,</span>
+<span class="lineno"> 5</span>                                 <span class="ss">:body</span><span class="p">,</span>
+<span class="lineno"> 6</span>                                 <span class="ss">:author</span><span class="p">,</span>
+<span class="lineno"> 7</span>                                 <span class="ss">:format</span>
+<span class="lineno"> 8</span> 
+<span class="lineno"> 9</span>   <span class="n">validates_presence_of</span>         <span class="ss">:title</span><span class="p">,</span>
+<span class="lineno">10</span>                                 <span class="ss">:format</span><span class="p">,</span>
+<span class="lineno">11</span>                                 <span class="ss">:slug</span>
+<span class="lineno">12</span> 
+<span class="lineno">13</span>   <span class="n">before_validation</span> <span class="k">do</span>
+<span class="lineno">14</span>     <span class="nb">self</span><span class="o">.</span><span class="n">slug</span> <span class="o">=</span> <span class="nb">self</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">parameterize</span>
+<span class="lineno">15</span>   <span class="k">end</span>
+<span class="lineno">16</span> 
+<span class="lineno">17</span>   <span class="k">def</span> <span class="nf">to_param</span>
+<span class="lineno">18</span>     <span class="nb">self</span><span class="o">.</span><span class="n">slug</span>
+<span class="lineno">19</span>   <span class="k">end</span>
+<span class="lineno">20</span> <span class="k">end</span>
+</code></pre></div>
+
+<p>Next create a controller that will render the requested <code>Content</code>:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno"> 1</span> <span class="c1"># File: app/controllers/contents_controller.rb</span>
+<span class="lineno"> 2</span> 
+<span class="lineno"> 3</span> <span class="k">class</span> <span class="nc">ContentsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<span class="lineno"> 4</span>   <span class="k">def</span> <span class="nf">show</span>
+<span class="lineno"> 5</span>     <span class="c1"># Get the ID of the page being requested, defaulting to &#39;home&#39;</span>
+<span class="lineno"> 6</span>     <span class="vi">@id</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:id</span><span class="p">,</span> <span class="s1">&#39;home&#39;</span><span class="p">)</span>
+<span class="lineno"> 7</span> 
+<span class="lineno"> 8</span>     <span class="c1"># Get the format of the requested content</span>
+<span class="lineno"> 9</span>     <span class="vi">@format</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:format</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">)</span>
+<span class="lineno">10</span> 
+<span class="lineno">11</span>     <span class="c1"># Find the content by its slug and format</span>
+<span class="lineno">12</span>     <span class="vi">@content</span> <span class="o">=</span> <span class="no">Content</span><span class="o">.</span><span class="n">find_by_slug_and_format!</span><span class="p">(</span><span class="vi">@id</span><span class="p">,</span> <span class="vi">@format</span><span class="p">)</span>
+<span class="lineno">13</span> 
+<span class="lineno">14</span>     <span class="c1"># Render the content inline</span>
+<span class="lineno">15</span>     <span class="n">render</span> <span class="ss">inline</span><span class="p">:</span> <span class="vi">@content</span><span class="o">.</span><span class="n">body</span>
+<span class="lineno">16</span>   <span class="k">end</span>
+<span class="lineno">17</span> <span class="k">end</span>
+</code></pre></div>
+
+<p>Configure your app’s routes:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: config/routes.rb</span>
+<span class="lineno">2</span> 
+<span class="lineno">3</span> <span class="no">MyApp</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+<span class="lineno">4</span>   <span class="n">root</span> <span class="ss">to</span><span class="p">:</span> <span class="s2">&quot;contents#show&quot;</span>
+<span class="lineno">5</span>   <span class="n">get</span> <span class="s2">&quot;contents/*id&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;contents#show&quot;</span>
+<span class="lineno">6</span> <span class="k">end</span>
+</code></pre></div>
+
+<p>Fire up the <code>rails console</code> and create some default content:</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="no">Content</span><span class="o">.</span><span class="n">create!</span> <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="ss">title</span><span class="p">:</span> <span class="s1">&#39;Home Page&#39;</span><span class="p">,</span> <span class="ss">body</span><span class="p">:</span> <span class="s1">&#39;&lt;h1&gt;&lt;%= @content.title %&gt;&lt;/h1&gt;&#39;</span>
+</code></pre></div>
+
+<p>Now when you visit your app in the browser you’ll be presented with content that
+was pulled from the database and rendered by your application.</p>
+
+<p>This is just a very brief example of how to set this up. There’s a lot more to
+take into consideration. For example, since you can execute ERB code in your
+site’s dynamic content using this method, you’ll need to take the necessary
+security measures in the controller to ensure that malicious code or rouge
+scripts could not be executed. Which means that, unless you are the only person
+who will be editing your site’s content, you will probably want to use something
+other than Rails default template renderer, such as
+<a href="https://github.com/Shopify/liquid">Shopify’s Liquid</a> template language, since
+it leaves your site open to too many vulnerabilities otherwise.</p>
+
+<p>You’ll also need to set up the controller to edit the content from within the
+browser. I left that out of the above example for the sake of brevity, since
+it is very basic Rails code.</p>
+
+    </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=A Simple Rails CMS&url=http://www.hi5dev.com/2013/01/09/simple-rails-cms/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://www.hi5dev.com/2013/01/09/simple-rails-cms/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://www.hi5dev.com/2013/01/09/simple-rails-cms/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
+  </section>
+
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
         <a href="/2013/01/01/active-record-session-store/">
           ActiveRecord::Session::Store
         </a>
@@ -340,39 +470,6 @@ makes it really slow, at least on my computer, when resizing the window.</p>
     <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Foundation 3&url=http://www.hi5dev.com/code/2012/12/11/foundation-3/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://www.hi5dev.com/code/2012/12/11/foundation-3/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://www.hi5dev.com/code/2012/12/11/foundation-3/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
   </section>
 
-  <section class="post">
-    <header class="post-header">
-      <h2 class="post-title">
-        <a href="/code/2012/12/05/jekyll/">
-          Jekyll
-        </a>
-      </h2>
-      <p class="post-meta">
-        Dec 5, 2012
-
-        
-
-        
-      </p>
-    </header>
-    <div class="post-description">
-      <p>I have decided to use <a href="http://pages.github.com/">github pages</a> to manage my
-website. It’s a fantastic setup; ideal for a programmer. It gives me complete
-control over my website, at the same time as keeping it simple, and easy to
-manage.</p>
-
-<p>The main reason I’m using github pages is because it comes with Jekyll built in.
-And having the entire website kept in a git repository means I can at anytime
-pull the entire website off of one server, and push it onto a new one without
-having to muck about on a server. It also makes it a whole lot easier to back up
-the website. All I have to do is push the source code into another repository
-after I push it to where it’s published live.</p>
-
-    </div>
-
-    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Jekyll&url=http://www.hi5dev.com/code/2012/12/05/jekyll/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://www.hi5dev.com/code/2012/12/05/jekyll/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://www.hi5dev.com/code/2012/12/05/jekyll/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
-  </section>
-
 
 
   <div class="pagination">
@@ -393,11 +490,17 @@ after I push it to where it’s published live.</p>
         <strong>2</strong>
       
     
+      
+        <a href="/page3">
+          3
+        </a>
+      
+    
 
     
-      <span>
+      <a href="/page3">
         Next
-      </span>
+      </a>
     
   </div>
 

@@ -7,6 +7,26 @@
     <atom:link href="http://www.hi5dev.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Web Framework from Scratch - Part One</title>
+        <description>&lt;p&gt;Recently I was browsing through Ruby’s
+&lt;a href=&quot;//ruby-doc.org/stdlib-2.3.0/&quot;&gt;standard library documentation&lt;/a&gt;,
+and I noticed that everything you need to build a fully featured web application
+framework is already built in to Ruby. So I decided to build a new web framework
+that will work out the door without relying on anything other than Ruby’s
+standard library.&lt;/p&gt;
+
+&lt;p&gt;I started a series on YouTube to document my progress on building the framework
+from scratch. Here is the first episode.&lt;/p&gt;
+
+&lt;style&gt;.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }&lt;/style&gt;
+&lt;div class=&quot;embed-container&quot;&gt;&lt;iframe src=&quot;https://www.youtube.com/embed/bHPkYmEwWTY&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
+</description>
+        <pubDate>Tue, 05 Jan 2016 00:00:00 -0800</pubDate>
+        <link>http://www.hi5dev.com/ruby/2016/01/05/web_framework_from_scratch_part_one/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/ruby/2016/01/05/web_framework_from_scratch_part_one/</guid>
+      </item>
+    
+      <item>
         <title>Flash Marketing with Rails</title>
         <description>&lt;p&gt;In a &lt;a href=&quot;http://www.hi5dev.com/2013/01/01/active-record-session-store/&quot;&gt;previous article&lt;/a&gt;,
 I talked about how you can use ActiveRecord session store to display promotions
@@ -833,25 +853,6 @@ makes it really slow, at least on my computer, when resizing the window.&lt;/p&g
         <pubDate>Tue, 11 Dec 2012 00:00:00 -0800</pubDate>
         <link>http://www.hi5dev.com/code/2012/12/11/foundation-3/</link>
         <guid isPermaLink="true">http://www.hi5dev.com/code/2012/12/11/foundation-3/</guid>
-      </item>
-    
-      <item>
-        <title>Jekyll</title>
-        <description>&lt;p&gt;I have decided to use &lt;a href=&quot;http://pages.github.com/&quot;&gt;github pages&lt;/a&gt; to manage my
-website. It’s a fantastic setup; ideal for a programmer. It gives me complete
-control over my website, at the same time as keeping it simple, and easy to
-manage.&lt;/p&gt;
-
-&lt;p&gt;The main reason I’m using github pages is because it comes with Jekyll built in.
-And having the entire website kept in a git repository means I can at anytime
-pull the entire website off of one server, and push it onto a new one without
-having to muck about on a server. It also makes it a whole lot easier to back up
-the website. All I have to do is push the source code into another repository
-after I push it to where it’s published live.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 05 Dec 2012 00:00:00 -0800</pubDate>
-        <link>http://www.hi5dev.com/code/2012/12/05/jekyll/</link>
-        <guid isPermaLink="true">http://www.hi5dev.com/code/2012/12/05/jekyll/</guid>
       </item>
     
   </channel>
