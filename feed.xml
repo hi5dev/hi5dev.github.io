@@ -7,6 +7,30 @@
     <atom:link href="http://www.hi5dev.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Web Framework from Scratch - Part Two</title>
+        <description>&lt;p&gt;Here’s episode two in the series documenting my progress of creating a web
+framework from scratch in Ruby using only the standard libraries.&lt;/p&gt;
+
+&lt;p&gt;This is a code optimization video. I didn’t like the way I left the testing set
+up in the first episode. It was too cumbersome to run. Every time you ran the
+test runner it would run every single test. I moved &lt;code&gt;test/test_runner.rb&lt;/code&gt; into
+&lt;code&gt;exe/test&lt;/code&gt;, and allowed for parameters specifying the names of the tests to run.&lt;/p&gt;
+
+&lt;p&gt;The code for this episode can be viewed on Github
+&lt;a href=&quot;https://github.com/hi5dev/simple-web-framework/tree/episode_2&quot;&gt;here&lt;/a&gt;,
+and a diff between episode one and two can be viewed
+&lt;a href=&quot;https://github.com/hi5dev/simple-web-framework/compare/episode_1...episode_2&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;style&gt;.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }&lt;/style&gt;
+&lt;div class=&quot;embed-container&quot;&gt;&lt;iframe src=&quot;https://www.youtube.com/embed/xbz_DErcA0A&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Wed, 06 Jan 2016 00:00:00 -0800</pubDate>
+        <link>http://www.hi5dev.com/ruby/2016/01/06/web_framework_from_scratch_part_two/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/ruby/2016/01/06/web_framework_from_scratch_part_two/</guid>
+      </item>
+    
+      <item>
         <title>Web Framework from Scratch - Part One</title>
         <description>&lt;p&gt;Recently I was browsing through Ruby’s
 &lt;a href=&quot;//ruby-doc.org/stdlib-2.3.0/&quot;&gt;standard library documentation&lt;/a&gt;,
@@ -20,6 +44,7 @@ from scratch. Here is the first episode.&lt;/p&gt;
 
 &lt;style&gt;.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }&lt;/style&gt;
 &lt;div class=&quot;embed-container&quot;&gt;&lt;iframe src=&quot;https://www.youtube.com/embed/bHPkYmEwWTY&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
+
 </description>
         <pubDate>Tue, 05 Jan 2016 00:00:00 -0800</pubDate>
         <link>http://www.hi5dev.com/ruby/2016/01/05/web_framework_from_scratch_part_one/</link>
@@ -829,30 +854,6 @@ send your form data to. That’s it.&lt;/p&gt;
         <pubDate>Wed, 12 Dec 2012 00:00:00 -0800</pubDate>
         <link>http://www.hi5dev.com/code/2012/12/12/simple-form/</link>
         <guid isPermaLink="true">http://www.hi5dev.com/code/2012/12/12/simple-form/</guid>
-      </item>
-    
-      <item>
-        <title>Foundation 3</title>
-        <description>&lt;p&gt;I’ve decided to build my website using &lt;a href=&quot;http://foundation.zurb.com/&quot;&gt;Foundation 3&lt;/a&gt;,
-which claims to be “the most advanced responsive front-end framework in the
-world.”&lt;/p&gt;
-
-&lt;p&gt;So far the results have been pretty clean, from a developer’s point of view,
-anyway, and I am actually very impressed. I’m thinking of using this framework
-to develop a Shopify theme. I’ve attempted to build a Shopify theme in the past
-using Twitter’s &lt;a href=&quot;http://twitter.github.com/bootstrap/&quot;&gt;Bootstrap&lt;/a&gt; CSS framework,
-but I found it rather bulky, and difficult to work with, to be honest. So I
-never really got too far with it.&lt;/p&gt;
-
-&lt;p&gt;What I like the most about this CSS framework is how clean the responsive layout
-is, and how smooth it transitions when you resize the browser. Go ahead and try
-resizing your browser now to watch how quickly, and smoothly it makes the
-transition. The Twitter Bootstrap responsive theme relies on JavaScript, which
-makes it really slow, at least on my computer, when resizing the window.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 11 Dec 2012 00:00:00 -0800</pubDate>
-        <link>http://www.hi5dev.com/code/2012/12/11/foundation-3/</link>
-        <guid isPermaLink="true">http://www.hi5dev.com/code/2012/12/11/foundation-3/</guid>
       </item>
     
   </channel>
