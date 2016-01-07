@@ -7,6 +7,39 @@
     <atom:link href="http://www.hi5dev.com/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Web Framework from Scratch - Part Three</title>
+        <description>&lt;p&gt;So I finally got into actually serving content through the framework!&lt;/p&gt;
+
+&lt;p&gt;I started by demonstrating how to use
+&lt;a href=&quot;http://ruby-doc.org/stdlib-2.3.0/libdoc/webrick/rdoc/index.html&quot;&gt;WEBrick&lt;/a&gt;
+to server static assets. Then off-camera I creating a more object-oriented
+approach.&lt;/p&gt;
+
+&lt;p&gt;I still have to write the tests for the code I wrote, which may end up changing
+things a little if I run into any errors. I’ll do that between this episode and
+the next.&lt;/p&gt;
+
+&lt;p&gt;Moving forward I’m going to be recording less of the actual coding since it’s
+going to start getting very tedious, very quickly. Instead I will be
+demonstrating the basic principals involved in writing the framework, and then
+showing the code that I wrote, with an explanation of what it does, and the
+reasons behind it.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/hi5dev/simple-web-framework/tree/episode_3&quot;&gt;Episode Code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/hi5dev/simple-web-framework/compare/episode_2...episode_3&quot;&gt;Episode 2 and 3 Diff&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;style&gt;.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }&lt;/style&gt;
+&lt;div class=&quot;embed-container&quot;&gt;&lt;iframe src=&quot;https://www.youtube.com/embed/eYc1xjt1RDs&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 07 Jan 2016 00:00:00 -0800</pubDate>
+        <link>http://www.hi5dev.com/ruby/2016/01/07/web_framework_from_scratch_part_three/</link>
+        <guid isPermaLink="true">http://www.hi5dev.com/ruby/2016/01/07/web_framework_from_scratch_part_three/</guid>
+      </item>
+    
+      <item>
         <title>Web Framework from Scratch - Part Two</title>
         <description>&lt;p&gt;Here’s episode two in the series documenting my progress of creating a web
 framework from scratch in Ruby using only the standard libraries.&lt;/p&gt;
@@ -831,29 +864,6 @@ right now:&lt;/p&gt;
         <pubDate>Mon, 17 Dec 2012 00:00:00 -0800</pubDate>
         <link>http://www.hi5dev.com/code/2012/12/17/multiple-route-files-in-rails/</link>
         <guid isPermaLink="true">http://www.hi5dev.com/code/2012/12/17/multiple-route-files-in-rails/</guid>
-      </item>
-    
-      <item>
-        <title>SimpleForm</title>
-        <description>&lt;p&gt;Since I’m hosting my website on Github I have to use a 3rd party service for
-collecting data from HTML forms. I almost opted out of a static website content
-generator (Jekyll in this case) because of the bad experiences I have had in the
-past with online form tools.&lt;/p&gt;
-
-&lt;p&gt;Most of the online form tools want to include some sort of branding on your
-form, and require that you insert a script tag where you want the form to go.
-This causes all kinds of issues, not the least of which is the lack of being
-able to modify the form’s styling to match your existing website since most of
-them slap the form into your website in an embedded iframe.&lt;/p&gt;
-
-&lt;p&gt;Fortunately I discovered a really simple hosted form tool called
-&lt;a href=&quot;http://getsimpleform.com/&quot;&gt;SimpleForm&lt;/a&gt; that doesn’t care about branding, and
-doesn’t use iframes and script tags. All it does is provide you with a place to
-send your form data to. That’s it.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 12 Dec 2012 00:00:00 -0800</pubDate>
-        <link>http://www.hi5dev.com/code/2012/12/12/simple-form/</link>
-        <guid isPermaLink="true">http://www.hi5dev.com/code/2012/12/12/simple-form/</guid>
       </item>
     
   </channel>

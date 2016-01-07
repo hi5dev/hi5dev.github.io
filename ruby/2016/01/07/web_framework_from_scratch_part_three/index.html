@@ -3,10 +3,10 @@
   <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Web Framework from Scratch - Part Two</title>
+  <title>Web Framework from Scratch - Part Three</title>
   <meta name="viewport" content="width=device-width">
   <meta name="description" content="Ruby Development">
-  <link rel="canonical" href="http://www.hi5dev.com/ruby/2016/01/06/web_framework_from_scratch_part_two/">
+  <link rel="canonical" href="http://www.hi5dev.com/ruby/2016/01/07/web_framework_from_scratch_part_three/">
 
   <link rel="stylesheet" href="/assets/pure.min-ea4b13f6fc0f7ab27ab8338e9f8c278c.css">
   <link rel="stylesheet" href="/assets/site-d3245521525be3916d3889e980280e76.css">
@@ -91,14 +91,14 @@
   <meta itemprop="inLanguage" content="en-US" />
   <header class="post-header">
     <h2 class="post-title">
-      <a href="http://www.hi5dev.com/ruby/2016/01/06/web_framework_from_scratch_part_two/" itemprop="url">
-        <span itemprop="headline">Web Framework from Scratch - Part Two</span>
+      <a href="http://www.hi5dev.com/ruby/2016/01/07/web_framework_from_scratch_part_three/" itemprop="url">
+        <span itemprop="headline">Web Framework from Scratch - Part Three</span>
       </a>
     </h2>
     <p class="post-meta">
       <meta itemprop="datePublished"
-            content="2016-01-06" />
-      Jan 6, 2016
+            content="2016-01-07" />
+      Jan 7, 2016
       •
       <span itemprop="author">
         <span itemscope itemtype="http://schema.org/Person">
@@ -109,25 +109,34 @@
     </p>
   </header>
   <div class="post-description" itemprop="articleBody">
-    <p>Here’s episode two in the series documenting my progress of creating a web
-framework from scratch in Ruby using only the standard libraries.</p>
+    <p>So I finally got into actually serving content through the framework!</p>
 
-<p>This is a code optimization video. I didn’t like the way I left the testing set
-up in the first episode. It was too cumbersome to run. Every time you ran the
-test runner it would run every single test. I moved <code>test/test_runner.rb</code> into
-<code>exe/test</code>, and allowed for parameters specifying the names of the tests to run.</p>
+<p>I started by demonstrating how to use
+<a href="http://ruby-doc.org/stdlib-2.3.0/libdoc/webrick/rdoc/index.html">WEBrick</a>
+to server static assets. Then off-camera I creating a more object-oriented
+approach.</p>
 
-<p>The code for this episode can be viewed on Github
-<a href="https://github.com/hi5dev/simple-web-framework/tree/episode_2">here</a>,
-and a diff between episode one and two can be viewed
-<a href="https://github.com/hi5dev/simple-web-framework/compare/episode_1...episode_2">here</a>.</p>
+<p>I still have to write the tests for the code I wrote, which may end up changing
+things a little if I run into any errors. I’ll do that between this episode and
+the next.</p>
+
+<p>Moving forward I’m going to be recording less of the actual coding since it’s
+going to start getting very tedious, very quickly. Instead I will be
+demonstrating the basic principals involved in writing the framework, and then
+showing the code that I wrote, with an explanation of what it does, and the
+reasons behind it.</p>
+
+<ul>
+  <li><a href="https://github.com/hi5dev/simple-web-framework/tree/episode_3">Episode Code</a></li>
+  <li><a href="https://github.com/hi5dev/simple-web-framework/compare/episode_2...episode_3">Episode 2 and 3 Diff</a></li>
+</ul>
 
 <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style>
-<div class="embed-container"><iframe src="https://www.youtube.com/embed/xbz_DErcA0A" frameborder="0" allowfullscreen=""></iframe></div>
+<div class="embed-container"><iframe src="https://www.youtube.com/embed/eYc1xjt1RDs" frameborder="0" allowfullscreen=""></iframe></div>
 
 
   </div>
-  <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Web Framework from Scratch - Part Two&url=http://www.hi5dev.com/ruby/2016/01/06/web_framework_from_scratch_part_two/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://www.hi5dev.com/ruby/2016/01/06/web_framework_from_scratch_part_two/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://www.hi5dev.com/ruby/2016/01/06/web_framework_from_scratch_part_two/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
+  <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Web Framework from Scratch - Part Three&url=http://www.hi5dev.com/ruby/2016/01/07/web_framework_from_scratch_part_three/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://www.hi5dev.com/ruby/2016/01/07/web_framework_from_scratch_part_three/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://www.hi5dev.com/ruby/2016/01/07/web_framework_from_scratch_part_three/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
 </section>
 
 

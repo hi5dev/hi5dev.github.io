@@ -15,7 +15,6 @@
   <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
   <script src="/assets/yui-2a7298413fd4caa5503ee14e976bd046.js"></script>
   <script src="/assets/pure-43ceac8f144ed47caf070f881a91b7ee.js"></script>
-  <script src="/assets/ga-0c1af228bf83b8a72685b6ac2e572780.js"></script>
   <script src="/assets/search_results-7cf799b68d32b821f9db0c499eaf4028.js"></script>
 
   
@@ -64,11 +63,10 @@
   </div>
 </div>
 
-
       <div class="content pure-u-3-4">
-        <div class="main">
-          
-            <div id="search">
+  <div class="main">
+    
+      <div id="search">
   <form action="/search" method="get" class="pure-form">
     <input type="text"
            id="search-query"
@@ -81,15 +79,74 @@
 </div>
 
 
-            <section id="search-results" style="display: none;">
-              <table class="entries">
-              </table>
-            </section>
+      <section id="search-results" style="display: none;">
+        <table class="entries">
+        </table>
+      </section>
 
-            <hr/>
-          
+      <hr/>
+    
 
-          
+    
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/ruby/2016/01/07/web_framework_from_scratch_part_three/">
+          Web Framework from Scratch - Part Three
+        </a>
+      </h2>
+      <p class="post-meta">
+        Jan 7, 2016
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>So I finally got into actually serving content through the framework!</p>
+
+<p>I started by demonstrating how to use
+<a href="http://ruby-doc.org/stdlib-2.3.0/libdoc/webrick/rdoc/index.html">WEBrick</a>
+to server static assets. Then off-camera I creating a more object-oriented
+approach.</p>
+
+<p>I still have to write the tests for the code I wrote, which may end up changing
+things a little if I run into any errors. I’ll do that between this episode and
+the next.</p>
+
+<p>Moving forward I’m going to be recording less of the actual coding since it’s
+going to start getting very tedious, very quickly. Instead I will be
+demonstrating the basic principals involved in writing the framework, and then
+showing the code that I wrote, with an explanation of what it does, and the
+reasons behind it.</p>
+
+<ul>
+  <li><a href="https://github.com/hi5dev/simple-web-framework/tree/episode_3">Episode Code</a></li>
+  <li><a href="https://github.com/hi5dev/simple-web-framework/compare/episode_2...episode_3">Episode 2 and 3 Diff</a></li>
+</ul>
+
+<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style>
+<div class="embed-container"><iframe src="https://www.youtube.com/embed/eYc1xjt1RDs" frameborder="0" allowfullscreen=""></iframe></div>
+
+
+    </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Web Framework from Scratch - Part Three&url=http://www.hi5dev.com/ruby/2016/01/07/web_framework_from_scratch_part_three/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://www.hi5dev.com/ruby/2016/01/07/web_framework_from_scratch_part_three/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://www.hi5dev.com/ruby/2016/01/07/web_framework_from_scratch_part_three/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- hi5dev.com -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9711746100027849"
+     data-ad-slot="2706210122"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </section>
+
   <section class="post">
     <header class="post-header">
       <h2 class="post-title">
@@ -627,143 +684,6 @@ CTRL+C will automatically send the KILL signal to every task for you.</p>
 
   </section>
 
-  <section class="post">
-    <header class="post-header">
-      <h2 class="post-title">
-        <a href="/code/2013/12/05/free-private-gem-server-how-to/">
-          Get Your Own Free Private Gem Server
-        </a>
-      </h2>
-      <p class="post-meta">
-        Dec 5, 2013
-
-        
-
-        
-      </p>
-    </header>
-    <div class="post-description">
-      <p>Using Heroku you can privately host your gems in just a couple of minutes.
-Here’s how.</p>
-
-<p>Start by creating an empty project folder, and add a Gemfile with only the
-source and ruby version:</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File: Gemfile</span>
-<span class="lineno">2</span> <span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
-<span class="lineno">3</span> <span class="n">ruby</span> <span class="s1">&#39;2.0.0&#39;</span>
-</code></pre></div>
-
-<p>Then run <code>bundle</code> to generate <code>Gemfile.lock</code>.</p>
-
-<p>Next, create a Procfile with the following content:</p>
-
-<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="c"># File: Procfile</span>
-<span class="lineno">2</span> web: gem server -p <span class="nv">$PORT</span>
-</code></pre></div>
-
-<p>Then set up Git:</p>
-
-<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>git init .
-<span class="lineno">2</span> <span class="nv">$ </span>git add .
-<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Initial commit
-</code></pre></div>
-
-<p>Create a new Heroku app and push your application to Heroku:</p>
-
-<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku create
-<span class="lineno">2</span> <span class="nv">$ </span>git push heroku master
-</code></pre></div>
-
-<p>Then launch your new privately hosted gem server in the browser:</p>
-
-<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>heroku open
-</code></pre></div>
-
-<p>And just like that you have your very own private gem server. Now let’s push a
-gem to the server.</p>
-
-<p>First you’ll want to create a .gitignore file and add .bundle to it so we don’t
-end up pushing our local Bundler settings to heroku:</p>
-
-<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;.bundle&quot;</span> &gt;&gt; .gitignore
-<span class="lineno">2</span> <span class="nv">$ </span>git add .gitignore
-<span class="lineno">3</span> <span class="nv">$ </span>git commit -m Ignoring the .bundle path
-</code></pre></div>
-
-<p>Next you’ll need a <code>vendor/cache</code> folder. This is where you’ll place your
-private <code>.gem</code> files. So go ahead and create that folder now, and copy your
-gem file into it.</p>
-
-<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>mkdir vendor
-<span class="lineno">2</span> <span class="nv">$ </span>mkdir vendor/cache
-<span class="lineno">3</span> <span class="nv">$ </span>cp my.gem vendor/cache <span class="c"># replace &#39;my.gem&#39; with your actual gem file</span>
-</code></pre></div>
-
-<p>This is where things can get a little tricky. In order for us to push our gem
-to Heroku, we need to first run <code>bundle install</code>. However since our gem is
-going to be privately hosted, Bundler will try and fail to download it from
-rubygems.org. So we need to cache the gem first so it doesn’t try to download
-it. Ironically, the way we do that is by using the <code>--no-cache</code> flag. Then
-you’ll need to run <code>bundle package --all</code> to vendor your gem’s dependencies
-along with the gem:</p>
-
-<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>bundle install --no-cache
-<span class="lineno">2</span> <span class="nv">$ </span>bundle package --all
-</code></pre></div>
-
-<p>Using <code>bundle --no-cache</code> tells Bundler that the <code>.gem</code> files have already been
-copied into the <code>vendor/cache</code> folder, and it will install those instead of
-connecting to rubygems.org. <code>bundle package --all</code> downloads the missing
-dependencies and copies their <code>.gem</code> files into the <code>vendor/cache</code> folder, thus
-completing the installation.</p>
-
-<p>It’s a bit confusing, but in the end it’s really only this three step process:</p>
-
-<ul>
-  <li>Copy your private gem’s <code>.gem</code> file into <code>vendor/cache</code></li>
-  <li>Run <code>bundle install --no-cache</code></li>
-  <li>Run <code>bundle package --all</code></li>
-</ul>
-
-<p>Then of course you’ll need to push those files to Heroku:</p>
-
-<div class="highlight"><pre><code class="bash"><span class="lineno">1</span> <span class="nv">$ </span>git add .
-<span class="lineno">2</span> <span class="nv">$ </span>git commit -m Installed my private gem
-<span class="lineno">3</span> <span class="nv">$ </span>git push heroku master
-</code></pre></div>
-
-<p>Refresh your browser, and you’ll notice that your gem will now be listed.</p>
-
-<p>Now all you have to do to install the private gem in your application is add
-the URL to your Heroku app that’s hosting the gems to your Gemfile. For
-example:</p>
-
-<div class="highlight"><pre><code class="ruby"><span class="lineno">1</span> <span class="c1"># File myapp/Gemfile</span>
-<span class="lineno">2</span> <span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
-<span class="lineno">3</span> <span class="n">source</span> <span class="s1">&#39;http://private-gem-server.herokuapp.com&#39;</span>
-<span class="lineno">4</span> 
-<span class="lineno">5</span> <span class="n">gem</span> <span class="s1">&#39;my_private_app&#39;</span>
-</code></pre></div>
-
-
-    </div>
-
-    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=Get Your Own Free Private Gem Server&url=http://www.hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://www.hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://www.hi5dev.com/code/2013/12/05/free-private-gem-server-how-to/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
-
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- hi5dev.com -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-9711746100027849"
-     data-ad-slot="2706210122"
-     data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-  </section>
-
 
 
   <div class="pagination">
@@ -799,9 +719,22 @@ example:</p>
 
 
 
-          
-        </div>
-      </div>
+    
+  </div>
+</div>
+
     </div>
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-51499761-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>

@@ -15,7 +15,6 @@
   <script src="/assets/modernizr-a5e46fc2c88bb0fb133f55f236e2b5fe.js"></script>
   <script src="/assets/yui-2a7298413fd4caa5503ee14e976bd046.js"></script>
   <script src="/assets/pure-43ceac8f144ed47caf070f881a91b7ee.js"></script>
-  <script src="/assets/ga-0c1af228bf83b8a72685b6ac2e572780.js"></script>
   <script src="/assets/search_results-7cf799b68d32b821f9db0c499eaf4028.js"></script>
 
   
@@ -64,11 +63,10 @@
   </div>
 </div>
 
-
       <div class="content pure-u-3-4">
-        <div class="main">
-          
-            <div id="search">
+  <div class="main">
+    
+      <div id="search">
   <form action="/search" method="get" class="pure-form">
     <input type="text"
            id="search-query"
@@ -81,15 +79,64 @@
 </div>
 
 
-            <section id="search-results" style="display: none;">
-              <table class="entries">
-              </table>
-            </section>
+      <section id="search-results" style="display: none;">
+        <table class="entries">
+        </table>
+      </section>
 
-            <hr/>
-          
+      <hr/>
+    
 
-          
+    
+  <section class="post">
+    <header class="post-header">
+      <h2 class="post-title">
+        <a href="/code/2012/12/12/simple-form/">
+          SimpleForm
+        </a>
+      </h2>
+      <p class="post-meta">
+        Dec 12, 2012
+
+        
+
+        
+      </p>
+    </header>
+    <div class="post-description">
+      <p>Since I’m hosting my website on Github I have to use a 3rd party service for
+collecting data from HTML forms. I almost opted out of a static website content
+generator (Jekyll in this case) because of the bad experiences I have had in the
+past with online form tools.</p>
+
+<p>Most of the online form tools want to include some sort of branding on your
+form, and require that you insert a script tag where you want the form to go.
+This causes all kinds of issues, not the least of which is the lack of being
+able to modify the form’s styling to match your existing website since most of
+them slap the form into your website in an embedded iframe.</p>
+
+<p>Fortunately I discovered a really simple hosted form tool called
+<a href="http://getsimpleform.com/">SimpleForm</a> that doesn’t care about branding, and
+doesn’t use iframes and script tags. All it does is provide you with a place to
+send your form data to. That’s it.</p>
+
+    </div>
+
+    <div class="share-links">Share this on &rarr; <a href="https://twitter.com/intent/tweet?text=SimpleForm&url=http://www.hi5dev.com/code/2012/12/12/simple-form/&via=hi5dev&related=hi5dev" rel="nofollow" target="_blank" title="Share on Twitter">Twitter</a><a href="https://facebook.com/sharer.php?u=http://www.hi5dev.com/code/2012/12/12/simple-form/" rel="nofollow" target="_blank" title="Share on Facebook">Facebook</a><a href="https://plus.google.com/share?url=http://www.hi5dev.com/code/2012/12/12/simple-form/" rel="nofollow" target="_blank" title="Share on Google">Google</a></div>
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- hi5dev.com -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9711746100027849"
+     data-ad-slot="2706210122"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </section>
+
   <section class="post">
     <header class="post-header">
       <h2 class="post-title">
@@ -222,9 +269,22 @@ after I push it to where it’s published live.</p>
 
 
 
-          
-        </div>
-      </div>
+    
+  </div>
+</div>
+
     </div>
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-51499761-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
   </body>
 </html>
